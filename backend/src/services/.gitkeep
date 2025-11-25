@@ -1,0 +1,2 @@
+# Services contain business logic
+# They are called by controllers and interact with repositories

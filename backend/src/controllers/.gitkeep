@@ -1,0 +1,2 @@
+# Controllers handle HTTP requests and responses
+# They receive requests, call services, and return responses

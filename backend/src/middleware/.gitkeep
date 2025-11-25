@@ -1,0 +1,2 @@
+# Middleware functions process requests before they reach controllers
+# Examples: authentication, validation, error handling

@@ -1,0 +1,2 @@
+# Repositories handle database operations
+# They abstract database access from business logic

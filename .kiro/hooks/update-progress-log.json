@@ -1,0 +1,13 @@
+{
+  "name": "Update Progress Log",
+  "description": "Reminds the agent to update PROGRESS.md after code changes",
+  "enabled": true,
+  "trigger": {
+    "type": "onFileSave",
+    "filePattern": "**/*.{ts,tsx,js,jsx,css,html}"
+  },
+  "action": {
+    "type": "sendMessage",
+    "message": "A code file was just saved. Please review what was implemented and update PROGRESS.md with:\n- What was built\n- Technologies/patterns used\n- Any tests written\n- What we learned\n- Next steps\n\nKeep the update concise but informative for educational purposes."
+  }
+}

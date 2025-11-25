@@ -1,0 +1,230 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+// The generator block tells Prisma to generate a TypeScript client
+// This client will have type-safe methods for all database operations
+generator client {
+  provider = "prisma-client-js"
+}
+
+// The datasource block configures the database connection
+// We're using PostgreSQL and reading the connection string from .env
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER MODEL
+// ============================================
+// Represents a user account in the marketplace
+// Users can be both buyers and sellers
+model User {
+  // Primary key - unique identifier for each user
+  id String @id @default(uuid())
+
+  // Authentication fields
+  email         String  @unique // Must be unique across all users
+  emailVerified Boolean @default(false) // Tracks if email is verified
+  username      String  @unique // Display name, must be unique
+  passwordHash  String? // Hashed password (null for passwordless users in future)
+
+  // Profile information
+  profilePicture String? // URL to profile image (optional)
+  location       String? // General location (city/region, not exact address)
+
+  // Metadata
+  joinDate      DateTime @default(now()) // When the user registered
+  averageRating Float    @default(0) // Calculated from ratings received
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt // Automatically updated on changes
+
+  // Advanced authentication fields (for post-MVP features)
+  mfaEnabled Boolean @default(false) // Multi-factor authentication enabled
+  mfaSecret  String? // Encrypted TOTP secret for MFA
+
+  // Relationships - these create foreign keys in related tables
+  // One user can have many listings
+  listings Listing[]
+  // One user can send many messages
+  sentMessages     Message[] @relation("SentMessages")
+  // One user can receive many messages
+  receivedMessages Message[] @relation("ReceivedMessages")
+  // One user can give many ratings
+  ratingsGiven   Rating[] @relation("RatingsGiven")
+  // One user can receive many ratings
+  ratingsReceived Rating[] @relation("RatingsReceived")
+  // One user can have many favorites
+  favorites Favorite[]
+
+  // Indexes for performance - speed up queries on these fields
+  @@index([email]) // Fast lookup by email (for login)
+  @@index([username]) // Fast lookup by username
+}
+
+// ============================================
+// LISTING MODEL
+// ============================================
+// Represents an item or service for sale
+// Supports both physical items and services
+model Listing {
+  id String @id @default(uuid())
+
+  // Foreign key to User - who created this listing
+  sellerId String
+  seller   User   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  // onDelete: Cascade means if user is deleted, their listings are too
+
+  // Basic listing information
+  title       String // Short title for the listing
+  description String @db.Text // Long description (Text type for unlimited length)
+  price       Float // Price in dollars (or base currency)
+
+  // Listing type - determines if it's an item or service
+  listingType String // 'item' or 'service'
+  pricingType String? // 'fixed' or 'hourly' (only for services)
+
+  // Categorization
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  // Images - stored as array of URLs
+  images String[] // Array of image URLs (up to 10)
+
+  // Status tracking
+  status String @default("active") // 'active', 'sold', 'completed', 'deleted'
+
+  // Location
+  location String // General location of item/service
+
+  // Timestamps
+  createdAt DateTime @default(now()) // When listing was created
+  updatedAt DateTime @updatedAt // When listing was last modified
+
+  // Relationships
+  messages  Message[] // Messages about this listing
+  ratings   Rating[] // Ratings related to this listing
+  favorites Favorite[] // Users who favorited this listing
+
+  // Indexes for search and filtering performance
+  @@index([sellerId]) // Fast lookup of user's listings
+  @@index([categoryId]) // Fast filtering by category
+  @@index([status]) // Fast filtering by status (active/sold)
+  @@index([listingType]) // Fast filtering by type (item/service)
+  @@index([createdAt]) // Fast sorting by date
+  @@index([price]) // Fast filtering by price range
+}
+
+// ============================================
+// CATEGORY MODEL
+// ============================================
+// Represents listing categories for organization
+// Examples: Electronics, Furniture, Services, etc.
+model Category {
+  id String @id @default(uuid())
+
+  name        String  @unique // Display name (e.g., "Electronics")
+  slug        String  @unique // URL-friendly version (e.g., "electronics")
+  description String? // Optional description of category
+
+  // Relationships
+  listings Listing[] // All listings in this category
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Index for fast lookup by slug (used in URLs)
+  @@index([slug])
+}
+
+// ============================================
+// MESSAGE MODEL
+// ============================================
+// Represents messages between users
+// Can be associated with a specific listing
+model Message {
+  id String @id @default(uuid())
+
+  // Foreign keys for sender and receiver
+  senderId   String
+  sender     User   @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User   @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  // Optional association with a listing
+  listingId String?
+  listing   Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+  // onDelete: SetNull means if listing is deleted, message remains but listingId becomes null
+
+  // Message content
+  content String @db.Text // Message text
+
+  // Status
+  read Boolean @default(false) // Has the receiver read this message?
+
+  // Timestamp
+  createdAt DateTime @default(now())
+
+  // Indexes for inbox queries
+  @@index([senderId]) // Fast lookup of sent messages
+  @@index([receiverId]) // Fast lookup of received messages
+  @@index([listingId]) // Fast lookup of messages about a listing
+  @@index([createdAt]) // Sort messages by time
+}
+
+// ============================================
+// RATING MODEL
+// ============================================
+// Represents ratings and reviews between users
+// Created after transactions
+model Rating {
+  id String @id @default(uuid())
+
+  // Foreign keys - who rated whom
+  raterId     String
+  rater       User   @relation("RatingsGiven", fields: [raterId], references: [id], onDelete: Cascade)
+  ratedUserId String
+  ratedUser   User   @relation("RatingsReceived", fields: [ratedUserId], references: [id], onDelete: Cascade)
+
+  // Optional association with listing
+  listingId String?
+  listing   Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+
+  // Rating data
+  stars  Int     @default(5) // 1-5 star rating
+  review String? @db.Text // Optional text review
+
+  // Timestamp
+  createdAt DateTime @default(now())
+
+  // Indexes for profile queries
+  @@index([ratedUserId]) // Fast lookup of user's ratings
+  @@index([raterId]) // Fast lookup of ratings given by user
+  @@index([listingId]) // Fast lookup of ratings for a listing
+  // Unique constraint - one rating per rater-listing combination
+  @@unique([raterId, listingId])
+}
+
+// ============================================
+// FAVORITE MODEL
+// ============================================
+// Represents saved/favorited listings
+// Allows users to bookmark listings they're interested in
+model Favorite {
+  id String @id @default(uuid())
+
+  // Foreign keys
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  // Timestamp
+  createdAt DateTime @default(now())
+
+  // Indexes
+  @@index([userId]) // Fast lookup of user's favorites
+  @@index([listingId]) // Fast lookup of who favorited a listing
+  // Unique constraint - user can only favorite a listing once
+  @@unique([userId, listingId])
+}
