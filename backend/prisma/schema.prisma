@@ -24,10 +24,14 @@ model User {
   id String @id @default(uuid())
 
   // Authentication fields
-  email         String  @unique // Must be unique across all users
-  emailVerified Boolean @default(false) // Tracks if email is verified
-  username      String  @unique // Display name, must be unique
-  passwordHash  String? // Hashed password (null for passwordless users in future)
+  email                     String   @unique // Must be unique across all users
+  emailVerified             Boolean  @default(false) // Tracks if email is verified
+  emailVerificationToken    String?  @unique // Token for email verification
+  emailVerificationExpires  DateTime? // When the verification token expires
+  passwordResetToken        String?  @unique // Token for password reset
+  passwordResetExpires      DateTime? // When the password reset token expires
+  username                  String   @unique // Display name, must be unique
+  passwordHash              String?  // Hashed password (null for passwordless users in future)
 
   // Profile information
   profilePicture String? // URL to profile image (optional)

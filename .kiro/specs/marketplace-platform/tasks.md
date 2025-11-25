@@ -52,7 +52,9 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Property 29: Data changes persist immediately**
   - **Validates: Requirements 10.1**
 
-- [-] 4. Checkpoint: Verify database setup
+- [x] 4. Checkpoint: Verify database setup
+
+
 
 
 
@@ -61,7 +63,8 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - Verify tables are created correctly
   - **Educational focus**: How to inspect database, use Prisma Studio
 
-- [ ] 4.1 Push to GitHub
+- [x] 4.1 Push to GitHub
+
 
 
   - Initialize git repository if not already done
@@ -74,7 +77,11 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
 
 ## Phase 2: Authentication & User Management (Backend)
 
-- [ ] 5. Implement user registration endpoint
+- [x] 5. Implement user registration endpoint
+
+
+
+
   - Create user registration controller
   - Implement password hashing with bcrypt
   - Add input validation (email format, password strength)
@@ -82,26 +89,42 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Educational focus**: Explain password hashing, why bcrypt, validation importance
   - _Requirements: 1.1, 1.2, 10.2_
 
-- [ ] 5.1 Write property test for user registration
+- [x] 5.1 Write property test for user registration
+
+
   - **Property 1: Valid registration creates unique user accounts**
   - **Validates: Requirements 1.1**
 
-- [ ] 5.2 Write property test for duplicate email rejection
+- [x] 5.2 Write property test for duplicate email rejection
+
+
   - **Property 2: Duplicate email registration is rejected**
   - **Validates: Requirements 1.2**
 
-- [ ] 5.3 Write property test for password hashing
+- [x] 5.3 Write property test for password hashing
+
+
   - **Property 30: Passwords are hashed before storage**
   - **Validates: Requirements 10.2**
 
-- [ ] 6. Implement email verification
+- [x] 6. Implement email verification
+
+
+
+
+
   - Create email verification endpoint
   - Set up Nodemailer for sending emails
   - Generate and validate verification tokens
   - **Educational focus**: Explain email verification importance, token security
   - _Requirements: 1.1_
 
-- [ ] 7. Implement user login endpoint
+- [x] 7. Implement user login endpoint
+
+
+
+
+
   - Create login controller
   - Implement JWT token generation
   - Add password verification
@@ -109,36 +132,54 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Educational focus**: Explain JWT, stateless authentication, rate limiting
   - _Requirements: 1.3, 1.4_
 
-- [ ] 7.1 Write property test for valid login
+- [x] 7.1 Write property test for valid login
+
+
   - **Property 3: Valid credentials authenticate successfully**
   - **Validates: Requirements 1.3**
 
-- [ ] 7.2 Write property test for invalid login rejection
+- [x] 7.2 Write property test for invalid login rejection
+
+
   - **Property 4: Invalid credentials are rejected**
   - **Validates: Requirements 1.4**
 
-- [ ] 8. Implement authentication middleware
+- [x] 8. Implement authentication middleware
+
+
+
+
+
   - Create JWT verification middleware
   - Add protected route decorator
   - Handle token expiration
   - **Educational focus**: Explain middleware pattern, request pipeline
   - _Requirements: 1.3_
 
-- [ ] 9. Implement password reset flow
+- [x] 9. Implement password reset flow
+
+
+
+
+
   - Create password reset request endpoint
   - Create password reset completion endpoint
   - Generate secure reset tokens
   - **Educational focus**: Explain secure token generation, time-based expiration
   - _Requirements: 1.5_
 
-- [ ] 10. Checkpoint: Test authentication flow
+- [-] 10. Checkpoint: Test authentication flow
+
+
+
   - Ensure all tests pass, ask the user if questions arise
   - Test registration → email verification → login flow
   - Test password reset flow
   - Verify JWT tokens work correctly
   - **Educational focus**: How to test APIs with Postman/curl
 
-- [ ] 10.1 Push to GitHub
+- [-] 10.1 Push to GitHub
+
   - Commit authentication implementation
   - Update PROGRESS.md with authentication milestone
   - Push to GitHub
