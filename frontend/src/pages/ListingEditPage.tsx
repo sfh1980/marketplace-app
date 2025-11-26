@@ -43,7 +43,7 @@ import { getCategories } from '../services/searchService';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
-import type { ListingType, PricingType, Category } from '../types/api';
+import type { Category } from '../types/api';
 import styles from './CreateListingPage.module.css'; // Reuse create page styles
 
 /**

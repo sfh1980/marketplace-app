@@ -1,0 +1,315 @@
+/**
+ * SearchPage Styles
+ * 
+ * This file demonstrates CSS Grid for responsive layouts and pagination UI patterns.
+ * 
+ * Key Concepts:
+ * - CSS Grid: Modern layout system for 2D layouts (rows and columns)
+ * - Responsive Design: Layout adapts to different screen sizes
+ * - CSS Variables: Consistent spacing, colors, and typography
+ * - Mobile-First: Base styles for mobile, enhanced for larger screens
+ */
+
+/**
+ * Main page container
+ * 
+ * Centers content and provides consistent padding
+ */
+.searchPage {
+  min-height: 100vh;
+  background-color: var(--color-background);
+  padding: var(--space-xl) var(--space-md);
+}
+
+/**
+ * Content container
+ * 
+ * Limits maximum width for better readability on large screens
+ * Centers content horizontally
+ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/**
+ * Header Section
+ * 
+ * Contains title, search query, and result count
+ */
+.header {
+  margin-bottom: var(--space-xl);
+}
+
+/**
+ * Two-Column Layout: Sidebar + Main Content
+ * 
+ * This creates a responsive layout with a filter sidebar and main content area.
+ * 
+ * Desktop Layout:
+ * - Sidebar: 280px fixed width (sticky positioning)
+ * - Main: Flexible width (takes remaining space)
+ * 
+ * Mobile Layout:
+ * - Single column (sidebar stacks on top)
+ * 
+ * CSS Grid makes this easy:
+ * - grid-template-columns: 280px 1fr
+ * - 280px: Fixed sidebar width
+ * - 1fr: Main content takes remaining space
+ * - gap: Space between columns
+ */
+.contentLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+/**
+ * Filter Sidebar
+ * 
+ * Contains the FilterPanel component.
+ * On mobile, appears above main content.
+ * On desktop, fixed width sidebar on the left.
+ */
+.sidebar {
+  width: 100%;
+}
+
+/**
+ * Main Content Area
+ * 
+ * Contains listings grid and pagination.
+ * Takes up remaining space after sidebar.
+ */
+.mainContent {
+  width: 100%;
+  min-width: 0; /* Prevents grid blowout */
+}
+
+.header h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.searchQuery {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.searchQuery strong {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.resultCount {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+/**
+ * Listings Grid
+ * 
+ * CSS Grid Layout for responsive multi-column display
+ * 
+ * How it works:
+ * - display: grid - Enables CSS Grid
+ * - grid-template-columns - Defines column structure
+ * - repeat(auto-fill, ...) - Creates as many columns as will fit
+ * - minmax(280px, 1fr) - Each column is at least 280px, grows to fill space
+ * - gap - Space between grid items (both rows and columns)
+ * 
+ * Responsive behavior:
+ * - On mobile (< 640px): 1 column (280px minimum fits)
+ * - On tablet (640-1024px): 2-3 columns
+ * - On desktop (> 1024px): 3-4 columns
+ * 
+ * This is called "intrinsic responsive design" - the layout responds
+ * to available space without media queries!
+ */
+.listingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+}
+
+/**
+ * Pagination Controls
+ * 
+ * Flexbox layout for horizontal arrangement of pagination elements
+ * 
+ * Pattern:
+ * - Previous button on left
+ * - Page info in center
+ * - Next button on right
+ */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-xl) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+/**
+ * Page info text
+ * 
+ * Shows "Page X of Y" between navigation buttons
+ */
+.pageInfo {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  min-width: 120px;
+  text-align: center;
+}
+
+/**
+ * Loading State
+ * 
+ * Centered message while data is loading
+ */
+.loadingState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+}
+
+/**
+ * Error State
+ * 
+ * Displayed when API request fails
+ */
+.errorState {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.errorState h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-error);
+  margin-bottom: var(--space-md);
+}
+
+.errorState p {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.errorDetails {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-family: monospace;
+  background-color: var(--color-surface);
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  max-width: 600px;
+}
+
+/**
+ * Empty State
+ * 
+ * Displayed when search returns no results
+ */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.emptyState h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.emptyState p {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+/**
+ * Responsive Adjustments
+ * 
+ * Media queries for fine-tuning on different screen sizes
+ */
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .searchPage {
+    padding: var(--space-2xl) var(--space-xl);
+  }
+
+  .header h1 {
+    font-size: var(--font-size-3xl);
+  }
+
+  /* Two-column layout on tablet and up */
+  .contentLayout {
+    grid-template-columns: 280px 1fr;
+  }
+
+  /* Ensure at least 2 columns on tablet */
+  .listingsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+  /* Ensure at least 3 columns on desktop */
+  .listingsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-xl);
+  }
+}
+
+/**
+ * Grid Layout Educational Notes:
+ * 
+ * Why CSS Grid?
+ * - Perfect for 2D layouts (rows and columns)
+ * - Automatically handles responsive behavior
+ * - Equal height items in each row
+ * - Consistent spacing
+ * - Less code than float or flexbox alternatives
+ * 
+ * Alternative: Flexbox
+ * - Better for 1D layouts (single row or column)
+ * - More control over individual item sizing
+ * - Better browser support (though Grid is well-supported now)
+ * 
+ * When to use Grid vs Flexbox?
+ * - Grid: When you need rows AND columns (like this listing grid)
+ * - Flexbox: When you need a single row or column (like the pagination controls)
+ * - Often used together: Grid for page layout, Flexbox for component layout
+ * 
+ * Pagination UI Best Practices:
+ * - Always show current page and total pages
+ * - Disable buttons at boundaries (can't go before page 1 or after last page)
+ * - Provide visual feedback on hover/active states (handled by Button component)
+ * - Consider adding page numbers for direct navigation (enhancement)
+ * - Scroll to top when changing pages for better UX
+ */

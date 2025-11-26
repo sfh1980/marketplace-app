@@ -22,6 +22,7 @@ export { Card } from './Card';
 export { Modal } from './Modal';
 export { ProtectedRoute } from './ProtectedRoute';
 export { ListingCard } from './ListingCard';
+export { FilterPanel } from './FilterPanel';
 
 // Export types if needed
 export type { default as ButtonProps } from './Button';

@@ -1,0 +1,255 @@
+/**
+ * FilterPanel Styles
+ * 
+ * This CSS module provides styling for the filter panel component.
+ * 
+ * Design Principles:
+ * - Clean, organized layout with clear visual hierarchy
+ * - Consistent spacing using CSS variables
+ * - Responsive design that works on all screen sizes
+ * - Accessible form controls with proper labels
+ * - Visual feedback for active filters
+ * 
+ * Educational Focus:
+ * - CSS Modules: Scoped styles that won't conflict with other components
+ * - CSS Variables: Consistent design system values
+ * - Flexbox: Flexible layouts for form controls
+ * - Form Styling: Making forms look good and accessible
+ */
+
+/**
+ * Main Filter Panel Container
+ * 
+ * The panel has a subtle background and border to separate it from
+ * the main content. Padding provides breathing room.
+ */
+.filterPanel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  height: fit-content;
+  position: sticky;
+  top: var(--space-lg);
+}
+
+/**
+ * Header Section
+ * 
+ * Contains the title and active filter count badge.
+ * Flexbox aligns them horizontally with space between.
+ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/**
+ * Active Filter Count Badge
+ * 
+ * Small badge showing how many filters are active.
+ * Uses primary color to draw attention.
+ */
+.activeCount {
+  background-color: var(--color-primary);
+  color: white;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+}
+
+/**
+ * Filters Container
+ * 
+ * Contains all filter groups. Vertical spacing between groups.
+ */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+/**
+ * Individual Filter Group
+ * 
+ * Each filter (category, price, etc.) is a group with a label
+ * and input controls.
+ */
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/**
+ * Filter Labels
+ * 
+ * Labels for each filter group. Semibold weight for emphasis.
+ */
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/**
+ * Select Dropdown
+ * 
+ * Custom styling for the category dropdown.
+ * We style it to match our design system.
+ */
+.select {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.select:hover {
+  border-color: var(--color-primary);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/**
+ * Radio Button Group
+ * 
+ * Container for radio buttons. Vertical layout with spacing.
+ */
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/**
+ * Radio Button Label
+ * 
+ * Each radio option is a label containing the input and text.
+ * Flexbox aligns them horizontally.
+ */
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  padding: var(--space-xs) 0;
+  transition: color var(--transition-fast);
+}
+
+.radioLabel:hover {
+  color: var(--color-primary);
+}
+
+/**
+ * Radio Button Input
+ * 
+ * Custom styling for radio buttons to match our design.
+ */
+.radio {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+/**
+ * Price Range Container
+ * 
+ * Horizontal layout for min and max price inputs with separator.
+ */
+.priceRange {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/**
+ * Price Separator
+ * 
+ * The "to" text between min and max price inputs.
+ */
+.priceSeparator {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+/**
+ * Action Buttons Container
+ * 
+ * Contains Apply and Clear buttons. Vertical layout with spacing.
+ */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+/**
+ * Responsive Design
+ * 
+ * On mobile devices, the filter panel might be in a modal or drawer.
+ * These styles ensure it looks good on small screens.
+ */
+@media (max-width: 768px) {
+  .filterPanel {
+    position: static;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .priceRange {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .priceSeparator {
+    text-align: center;
+  }
+}
+
+/**
+ * Print Styles
+ * 
+ * Hide filter panel when printing (users want to print results, not filters)
+ */
+@media print {
+  .filterPanel {
+    display: none;
+  }
+}

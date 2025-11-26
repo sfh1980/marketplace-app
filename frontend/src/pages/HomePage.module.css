@@ -1,0 +1,465 @@
+/**
+ * HomePage Styles
+ * 
+ * This CSS module demonstrates:
+ * - Mobile-first responsive design
+ * - CSS Grid for layouts
+ * - CSS Variables for consistency
+ * - BEM-like naming within CSS Modules
+ * - Loading states (skeletons)
+ * - Hover effects and transitions
+ * 
+ * Educational Focus:
+ * - How to structure a homepage layout
+ * - Responsive design patterns
+ * - Visual hierarchy through sizing and spacing
+ * - Loading state UX
+ */
+
+/* 
+  Main Container
+  
+  The homepage is divided into sections, each with its own purpose
+*/
+.homePage {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* 
+  Hero Section
+  
+  The hero is the first thing users see. Design goals:
+  - Eye-catching but not overwhelming
+  - Clear call-to-action (search)
+  - Good contrast for readability
+  
+  Design Pattern: Centered Hero
+  - Common on landing pages
+  - Focuses attention on the CTA
+*/
+.hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+  padding: var(--space-2xl) var(--space-lg);
+  text-align: center;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  width: 100%;
+}
+
+.heroTitle {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-md);
+  line-height: var(--line-height-tight);
+}
+
+.heroSubtitle {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-2xl);
+  opacity: 0.95;
+  line-height: var(--line-height-normal);
+}
+
+/* 
+  Search Form
+  
+  The primary call-to-action on the homepage.
+  
+  UX Principles:
+  - Large touch target (mobile-friendly)
+  - Clear visual affordance (looks clickable)
+  - Immediate feedback on interaction
+  - Accessible (proper labels, keyboard navigation)
+*/
+.searchForm {
+  display: flex;
+  gap: var(--space-sm);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.searchInput {
+  flex: 1;
+  padding: var(--space-md) var(--space-lg);
+  font-size: var(--font-size-base);
+  border: none;
+  border-radius: var(--radius-md);
+  background: white;
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-base);
+}
+
+.searchInput:focus {
+  outline: none;
+  box-shadow: var(--shadow-lg), 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.searchButton {
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  background: var(--color-secondary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-base);
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+}
+
+.searchButton:hover {
+  background: var(--color-secondary);
+  filter: brightness(1.1);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.searchButton:active {
+  transform: translateY(0);
+}
+
+/* 
+  Container
+  
+  Reusable container for content sections.
+  Provides consistent max-width and padding.
+*/
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* 
+  Section Styles
+  
+  Each section has consistent spacing and structure
+*/
+.categoriesSection,
+.listingsSection {
+  padding: var(--space-2xl) 0;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.viewAllButton {
+  padding: var(--space-sm) var(--space-lg);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.viewAllButton:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* 
+  Categories Grid
+  
+  Responsive grid that adapts to screen size.
+  
+  Mobile-First Approach:
+  - Start with 2 columns on mobile
+  - Increase to 3 on tablets
+  - Up to 6 on desktop
+  
+  Why CSS Grid:
+  - Automatic responsive behavior
+  - Equal-height cards
+  - Easy to maintain
+*/
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+/* Tablet: 3 columns */
+@media (min-width: 640px) {
+  .categoriesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Desktop: 6 columns */
+@media (min-width: 1024px) {
+  .categoriesGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* 
+  Category Card
+  
+  Clickable card for each category.
+  
+  Design Principles:
+  - Clear visual hierarchy (icon → name → count)
+  - Hover effect indicates interactivity
+  - Accessible (button element, proper labels)
+*/
+.categoryCard {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.categoryCard:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.categoryIcon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-xs);
+}
+
+.categoryName {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.categoryCount {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* 
+  Listings Grid
+  
+  Responsive grid for listing cards.
+  
+  Breakpoints:
+  - Mobile: 1 column (full width)
+  - Tablet: 2 columns
+  - Desktop: 3 columns
+  - Large Desktop: 4 columns
+*/
+.listingsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) {
+  .listingsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 768px) {
+  .listingsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Large Desktop: 4 columns */
+@media (min-width: 1024px) {
+  .listingsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 
+  Loading Skeletons
+  
+  Skeleton screens improve perceived performance.
+  
+  Why Skeletons:
+  - Users see something immediately (no blank screen)
+  - Indicates content is loading
+  - Reduces perceived wait time
+  - Better UX than spinners for content-heavy pages
+  
+  Implementation:
+  - Gray placeholder boxes
+  - Subtle animation (shimmer effect)
+  - Match the size/shape of actual content
+*/
+.categorySkeleton,
+.listingSkeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 0%,
+    #f0f0f0 50%,
+    var(--color-surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-lg);
+}
+
+.categorySkeleton {
+  height: 120px;
+}
+
+.listingSkeleton {
+  height: 300px;
+}
+
+/* Shimmer animation for skeletons */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 
+  Error Message
+  
+  Friendly error display when data fails to load.
+  
+  UX Principles:
+  - Clear but not alarming
+  - Suggests action (try again)
+  - Doesn't break the layout
+*/
+.errorMessage {
+  background: var(--color-error);
+  color: white;
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  text-align: center;
+  margin: var(--space-xl) 0;
+}
+
+.errorMessage p {
+  margin: 0;
+  font-size: var(--font-size-base);
+}
+
+/* 
+  Empty State
+  
+  Shown when there are no listings yet.
+  
+  Good Empty States:
+  - Explain why it's empty
+  - Suggest an action
+  - Maintain visual interest
+*/
+.emptyState {
+  text-align: center;
+  padding: var(--space-2xl);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 2px dashed var(--color-border);
+}
+
+.emptyState p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-lg);
+}
+
+.createListingButton {
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.createListingButton:hover {
+  background: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* 
+  Responsive Adjustments
+  
+  Fine-tune spacing and sizing for different screen sizes
+*/
+
+/* Mobile: Smaller hero */
+@media (max-width: 640px) {
+  .hero {
+    min-height: 300px;
+    padding: var(--space-xl) var(--space-md);
+  }
+  
+  .heroTitle {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .heroSubtitle {
+    font-size: var(--font-size-base);
+  }
+  
+  .searchForm {
+    flex-direction: column;
+  }
+  
+  .searchButton {
+    width: 100%;
+  }
+  
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+}
+
+/* Tablet and up: Larger spacing */
+@media (min-width: 768px) {
+  .categoriesSection,
+  .listingsSection {
+    padding: var(--space-2xl) 0;
+  }
+}

@@ -41,7 +41,7 @@ import { deleteListing, updateListingStatus } from '../services/listingService';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { Modal } from '../components/Modal';
-import type { Listing } from '../types/api';
+import type { Listing, ListingStatus } from '../types/api';
 import styles from './MyListingsPage.module.css';
 
 /**
@@ -109,7 +109,7 @@ export const MyListingsPage: React.FC = () => {
    * before the server responds.
    */
   const updateStatusMutation = useMutation({
-    mutationFn: ({ listingId, status }: { listingId: string; status: string }) =>
+    mutationFn: ({ listingId, status }: { listingId: string; status: ListingStatus }) =>
       updateListingStatus(listingId, { status }),
     onSuccess: () => {
       // Invalidate and refetch listings to show updated status
