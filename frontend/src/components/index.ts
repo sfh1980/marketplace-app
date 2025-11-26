@@ -20,6 +20,7 @@ export { Button } from './Button';
 export { Input } from './Input';
 export { Card } from './Card';
 export { Modal } from './Modal';
+export { ProtectedRoute } from './ProtectedRoute';
 
 // Export types if needed
 export type { default as ButtonProps } from './Button';

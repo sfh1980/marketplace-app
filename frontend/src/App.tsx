@@ -1,5 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import AuthContextExample from './examples/AuthContextExample';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
+import VerifyEmailNoticePage from './pages/VerifyEmailNoticePage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+import DashboardPage from './pages/DashboardPage';
 import styles from './App.module.css';
 
 // Create a client for React Query
@@ -16,20 +26,39 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <div className={styles.app}>
-          <header className={styles.appHeader}>
-            <h1>Marketplace Platform</h1>
-            <p>CSS Variables Design System Demo</p>
-          </header>
-          
-          <main className={styles.appMain}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-            </Routes>
-          </main>
-        </div>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <div className={styles.app}>
+            <header className={styles.appHeader}>
+              <h1>Marketplace Platform</h1>
+              <p>CSS Variables Design System Demo</p>
+            </header>
+            
+            <main className={styles.appMain}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/auth-example" element={<AuthContextExample />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/verify-email-notice" element={<VerifyEmailNoticePage />} />
+                <Route path="/verify-email" element={<VerifyEmailPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
+                
+                {/* Protected Routes - Require Authentication */}
+                <Route 
+                  path="/dashboard" 
+                  element={
+                    <ProtectedRoute>
+                      <DashboardPage />
+                    </ProtectedRoute>
+                  } 
+                />
+              </Routes>
+            </main>
+          </div>
+        </Router>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
@@ -165,6 +194,67 @@ function HomePage() {
         <h2 style={{ color: 'var(--color-success)' }}>✅ Design System Ready!</h2>
         <p>The CSS Variables design system is now set up and ready to use. All components can reference these variables for consistent styling.</p>
         <p><strong>Next steps:</strong> Create reusable UI components (Button, Input, Card, Modal) that use this design system.</p>
+      </section>
+
+      {/* Auth Context Example Link */}
+      <section className={styles.demoSection}>
+        <h2>🔐 Authentication Context</h2>
+        <p>The AuthContext is now set up for global authentication state management!</p>
+        <a 
+          href="/auth-example" 
+          style={{
+            display: 'inline-block',
+            marginTop: 'var(--space-md)',
+            padding: 'var(--space-md) var(--space-xl)',
+            backgroundColor: 'var(--color-primary)',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: 'var(--radius-md)',
+            fontWeight: 'var(--font-weight-medium)',
+          }}
+        >
+          View Auth Context Example →
+        </a>
+      </section>
+
+      {/* Protected Route Example */}
+      <section className={styles.demoSection}>
+        <h2>🛡️ Protected Routes</h2>
+        <p>The ProtectedRoute component guards routes that require authentication!</p>
+        <p style={{ marginTop: 'var(--space-md)', color: 'var(--color-text-secondary)' }}>
+          Try accessing the dashboard below. If you're not logged in, you'll be redirected to the login page.
+          After logging in, you'll be automatically redirected back to the dashboard!
+        </p>
+        <div style={{ display: 'flex', gap: 'var(--space-md)', marginTop: 'var(--space-lg)' }}>
+          <a 
+            href="/dashboard" 
+            style={{
+              display: 'inline-block',
+              padding: 'var(--space-md) var(--space-xl)',
+              backgroundColor: 'var(--color-success)',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: 'var(--radius-md)',
+              fontWeight: 'var(--font-weight-medium)',
+            }}
+          >
+            Try Protected Dashboard →
+          </a>
+          <a 
+            href="/login" 
+            style={{
+              display: 'inline-block',
+              padding: 'var(--space-md) var(--space-xl)',
+              backgroundColor: 'var(--color-secondary)',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: 'var(--radius-md)',
+              fontWeight: 'var(--font-weight-medium)',
+            }}
+          >
+            Login First
+          </a>
+        </div>
       </section>
     </div>
   );

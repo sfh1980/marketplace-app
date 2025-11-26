@@ -1,0 +1,291 @@
+/**
+ * RegisterPage Styles
+ * 
+ * This CSS Module provides scoped styles for the registration page.
+ * 
+ * Design Principles:
+ * - Mobile-first responsive design
+ * - Uses CSS variables from our design system
+ * - Clean, minimal aesthetic
+ * - Clear visual hierarchy
+ * - Accessible color contrasts
+ * 
+ * Layout:
+ * - Centered card on larger screens
+ * - Full-width on mobile
+ * - Consistent spacing using our spacing scale
+ */
+
+/**
+ * Container
+ * 
+ * Centers the registration card and provides padding.
+ * Uses flexbox for vertical and horizontal centering.
+ */
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  background-color: var(--color-surface);
+}
+
+/**
+ * Card
+ * 
+ * The main registration form container.
+ * Uses our design system's shadow and border radius.
+ */
+.card {
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2xl);
+}
+
+/* Reduce padding on mobile */
+@media (max-width: 640px) {
+  .card {
+    padding: var(--space-xl);
+  }
+}
+
+/**
+ * Header Section
+ */
+.header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-sm) 0;
+  line-height: var(--line-height-tight);
+}
+
+.subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+/**
+ * Error Alert
+ * 
+ * Displays API errors in a prominent, accessible way.
+ * Uses semantic color (error red) and includes an icon.
+ */
+.errorAlert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+  background-color: #fef2f2; /* Light red background */
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  color: #991b1b; /* Dark red text */
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.errorIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-error);
+}
+
+/**
+ * Form
+ * 
+ * Form layout with consistent spacing between fields.
+ */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/**
+ * Footer Section
+ * 
+ * Contains the login link for existing users.
+ */
+.footer {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.footerText {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: color var(--transition-fast);
+}
+
+.link:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.link:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/**
+ * Legal Notice
+ * 
+ * Terms and privacy policy links below the card.
+ */
+.legalNotice {
+  margin-top: var(--space-lg);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-align: center;
+  max-width: 480px;
+  line-height: var(--line-height-relaxed);
+}
+
+.legalLink {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.legalLink:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/**
+ * Success State
+ * 
+ * Shown after successful registration.
+ * Provides positive feedback before redirecting.
+ */
+.successCard {
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2xl);
+  text-align: center;
+}
+
+.successIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--space-lg);
+  background-color: var(--color-success);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: var(--font-weight-bold);
+}
+
+.successTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-md) 0;
+}
+
+.successMessage {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-lg) 0;
+  line-height: var(--line-height-relaxed);
+}
+
+.successSubtext {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-style: italic;
+}
+
+/**
+ * Responsive Design
+ * 
+ * Adjustments for different screen sizes.
+ */
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .container {
+    padding: var(--space-2xl);
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .title {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .subtitle {
+    font-size: var(--font-size-sm);
+  }
+  
+  .container {
+    padding: var(--space-md);
+  }
+  
+  .successCard {
+    padding: var(--space-xl);
+  }
+}
+
+/**
+ * Accessibility Enhancements
+ * 
+ * Focus states for keyboard navigation.
+ */
+.form input:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/**
+ * Animation
+ * 
+ * Subtle fade-in animation for the card.
+ */
+.card,
+.successCard {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
