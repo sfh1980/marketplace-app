@@ -270,7 +270,8 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Property 11: Deleted listings are permanently removed**
   - **Validates: Requirements 3.6**
 
-- [-] 21. Checkpoint: Test listing management
+- [x] 21. Checkpoint: Test listing management
+
 
 
   - Ensure all tests pass, ask the user if questions arise
@@ -278,7 +279,8 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - Test both item and service listings
   - Verify authorization works correctly
 
-- [-] 21.1 Push to GitHub
+- [x] 21.1 Push to GitHub
+
 
   - Commit listing management implementation
   - Update PROGRESS.md with listing features
