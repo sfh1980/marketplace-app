@@ -1,0 +1,291 @@
+/**
+ * Input Component Styles
+ * 
+ * Scoped styles for the Input component using CSS Modules.
+ * Provides consistent input styling with validation states.
+ */
+
+/* ============================================
+   Input Wrapper
+   ============================================
+   Container for the entire input component
+*/
+.input__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  width: 100%;
+}
+
+/* ============================================
+   Label
+   ============================================
+   Text label above the input
+*/
+.input__label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+/* Required indicator (asterisk) */
+.input__required {
+  color: var(--color-error);
+  margin-left: var(--space-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+/* ============================================
+   Input Container
+   ============================================
+   Wrapper around input and icons
+*/
+.input__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+/* Hover state */
+.input__container:hover:not(.input__container--disabled) {
+  border-color: var(--color-border-dark);
+}
+
+/* Focus-within (when input inside is focused) */
+.input__container:focus-within:not(.input__container--disabled) {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-lighter);
+}
+
+/* Error state */
+.input__container--error {
+  border-color: var(--color-error);
+}
+
+.input__container--error:focus-within {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px var(--color-error-light);
+}
+
+/* Success state */
+.input__container--success {
+  border-color: var(--color-success);
+}
+
+.input__container--success:focus-within {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px var(--color-success-light);
+}
+
+/* Disabled state */
+.input__container--disabled {
+  background-color: var(--color-surface);
+  border-color: var(--color-border-light);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ============================================
+   Input Element
+   ============================================
+   The actual input field
+*/
+.input {
+  /* Layout */
+  flex: 1;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  
+  /* Visual */
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  
+  /* Remove default styles */
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Placeholder text */
+.input::placeholder {
+  color: var(--color-text-tertiary);
+  opacity: 1;
+}
+
+/* Disabled input */
+.input:disabled {
+  cursor: not-allowed;
+  color: var(--color-text-tertiary);
+}
+
+/* Adjust padding when icons are present */
+.input--hasLeftIcon {
+  padding-left: var(--space-xs);
+}
+
+.input--hasRightIcon {
+  padding-right: var(--space-xs);
+}
+
+/* ============================================
+   Icons
+   ============================================
+   Left and right icons inside the input
+*/
+.input__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-tertiary);
+  margin: 0 var(--space-sm);
+}
+
+/* Status icons (success/error) */
+.input__statusIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0 var(--space-sm);
+}
+
+.input__successIcon {
+  color: var(--color-success);
+}
+
+.input__errorIcon {
+  color: var(--color-error);
+}
+
+/* ============================================
+   Helper Text and Error Messages
+   ============================================
+   Text displayed below the input
+*/
+.input__helper {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+}
+
+.input__error {
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  margin-top: var(--space-xs);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-xs);
+}
+
+/* ============================================
+   Input Type Specific Styles
+   ============================================
+   Special styling for specific input types
+*/
+
+/* Number input - hide spinner buttons */
+.input[type="number"]::-webkit-inner-spin-button,
+.input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Search input - remove default search styling */
+.input[type="search"]::-webkit-search-decoration,
+.input[type="search"]::-webkit-search-cancel-button,
+.input[type="search"]::-webkit-search-results-button,
+.input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+/* Password input - ensure consistent styling */
+.input[type="password"] {
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   Autofill Styles
+   ============================================
+   Style browser autofill to match our design
+*/
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-text-primary);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-background) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================
+   Adjust input sizes on smaller screens
+*/
+
+@media (max-width: 640px) {
+  .input {
+    font-size: var(--font-size-base);
+    padding: var(--space-sm) var(--space-md);
+  }
+  
+  .input__label {
+    font-size: var(--font-size-sm);
+  }
+  
+  .input__helper,
+  .input__error {
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* ============================================
+   Accessibility: Reduced Motion
+   ============================================
+   Respect user's motion preferences
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  .input__container {
+    transition: none;
+  }
+}
+
+/* ============================================
+   Dark Mode Adjustments
+   ============================================
+   Additional adjustments for dark mode
+*/
+
+@media (prefers-color-scheme: dark) {
+  .input:-webkit-autofill,
+  .input:-webkit-autofill:hover,
+  .input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-text-primary);
+    -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset;
+  }
+}

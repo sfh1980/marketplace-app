@@ -1,0 +1,327 @@
+/**
+ * Button Component Styles
+ * 
+ * This CSS Module provides scoped styles for the Button component.
+ * CSS Modules automatically generate unique class names to prevent conflicts.
+ * 
+ * For example, .button becomes something like .Button_button__a3x9z in production.
+ * This means we can use simple class names without worrying about collisions.
+ * 
+ * We follow BEM naming convention:
+ * - Block: .button (the component)
+ * - Element: .button__icon (part of the button)
+ * - Modifier: .button--primary (variation of the button)
+ */
+
+/* ============================================
+   Base Button Styles
+   ============================================
+   These styles apply to all button variants
+*/
+.button {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  text-align: center;
+  white-space: nowrap;
+  
+  /* Interaction */
+  cursor: pointer;
+  user-select: none;
+  
+  /* Visual */
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  
+  /* Animation */
+  transition: all var(--transition-fast);
+  
+  /* Remove default button styles */
+  text-decoration: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Focus state for accessibility (keyboard navigation) */
+.button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Disabled state */
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================================
+   Button Sizes
+   ============================================
+   Different sizes for different contexts
+*/
+
+/* Small buttons for compact spaces, secondary actions */
+.button--small {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-sm);
+  min-height: 32px;
+}
+
+/* Medium buttons (default) for most use cases */
+.button--medium {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-base);
+  min-height: 40px;
+}
+
+/* Large buttons for primary CTAs, hero sections */
+.button--large {
+  padding: var(--space-md) var(--space-lg);
+  font-size: var(--font-size-lg);
+  min-height: 48px;
+}
+
+/* ============================================
+   Button Variants
+   ============================================
+   Different visual styles for different purposes
+*/
+
+/* Primary: Main call-to-action buttons */
+.button--primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-color: var(--color-primary);
+}
+
+.button--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.button--primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Secondary: Less prominent actions */
+.button--secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text-inverse);
+  border-color: var(--color-secondary);
+}
+
+.button--secondary:hover:not(:disabled) {
+  background-color: var(--color-secondary-dark);
+  border-color: var(--color-secondary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.button--secondary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Outline: Subtle, secondary actions */
+.button--outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.button--outline:hover:not(:disabled) {
+  background-color: var(--color-primary-lighter);
+  border-color: var(--color-primary-dark);
+  color: var(--color-primary-dark);
+}
+
+.button--outline:active:not(:disabled) {
+  background-color: var(--color-primary-lighter);
+}
+
+/* Ghost: Minimal, tertiary actions */
+.button--ghost {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border-color: transparent;
+}
+
+.button--ghost:hover:not(:disabled) {
+  background-color: var(--color-surface-hover);
+  color: var(--color-primary);
+}
+
+.button--ghost:active:not(:disabled) {
+  background-color: var(--color-surface);
+}
+
+/* Danger: Destructive actions (delete, remove, etc.) */
+.button--danger {
+  background-color: var(--color-error);
+  color: var(--color-text-inverse);
+  border-color: var(--color-error);
+}
+
+.button--danger:hover:not(:disabled) {
+  background-color: #dc2626; /* Darker red */
+  border-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.button--danger:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================
+   Button Modifiers
+   ============================================
+   Additional variations and states
+*/
+
+/* Full width button (takes up entire container width) */
+.button--fullWidth {
+  width: 100%;
+}
+
+/* Loading state */
+.button--loading {
+  position: relative;
+  color: transparent; /* Hide text while loading */
+  pointer-events: none;
+}
+
+/* ============================================
+   Button Elements
+   ============================================
+   Parts of the button component
+*/
+
+/* Icon container */
+.button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Button content wrapper */
+.button__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Loading spinner container */
+.button__spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   Loading Spinner Animation
+   ============================================
+   CSS-only animated spinner
+*/
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  animation: spin 0.8s linear infinite;
+}
+
+.spinner__circle {
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 25;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+/* Spin animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dash animation for the circle */
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================
+   Adjust button sizes on smaller screens
+*/
+
+@media (max-width: 640px) {
+  /* Make buttons slightly smaller on mobile to save space */
+  .button--large {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-base);
+    min-height: 44px;
+  }
+  
+  .button--medium {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-sm);
+    min-height: 40px;
+  }
+}
+
+/* ============================================
+   Accessibility: Reduced Motion
+   ============================================
+   Respect user's motion preferences
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+  
+  .button:hover:not(:disabled) {
+    transform: none;
+  }
+  
+  .spinner {
+    animation: none;
+  }
+  
+  .spinner__circle {
+    animation: none;
+  }
+}

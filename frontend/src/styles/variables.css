@@ -1,77 +1,221 @@
-/* CSS Variables (Custom Properties) - Design System */
-/* These variables ensure consistency across the entire application */
+/**
+ * CSS Variables Design System
+ * 
+ * This file defines all design tokens (colors, spacing, typography, etc.) for the marketplace platform.
+ * Using CSS custom properties allows us to:
+ * - Maintain consistency across all components
+ * - Change values in one place and update everywhere
+ * - Support theming (like dark mode) easily
+ * - Provide semantic naming that makes code more readable
+ * 
+ * Best Practice: Always use these variables instead of hardcoded values in components
+ */
 
 :root {
-  /* Color Palette */
-  --color-primary: #3b82f6;
-  --color-primary-dark: #2563eb;
-  --color-primary-light: #60a5fa;
-  --color-secondary: #8b5cf6;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  --color-text-primary: #1f2937;
-  --color-text-secondary: #6b7280;
-  --color-background: #ffffff;
-  --color-surface: #f9fafb;
-  --color-border: #e5e7eb;
+  /* ============================================
+     COLOR PALETTE
+     ============================================
+     Organized by purpose: primary (brand), secondary (accent), 
+     semantic (success/warning/error), and neutral (text/backgrounds)
+  */
   
-  /* Spacing Scale - Used for margins, padding, gaps */
-  --space-xs: 0.25rem;    /* 4px */
-  --space-sm: 0.5rem;     /* 8px */
-  --space-md: 1rem;       /* 16px */
-  --space-lg: 1.5rem;     /* 24px */
-  --space-xl: 2rem;       /* 32px */
-  --space-2xl: 3rem;      /* 48px */
+  /* Primary Colors - Brand identity, main CTAs, links */
+  --color-primary: #3b82f6;           /* Blue 500 - Main brand color */
+  --color-primary-dark: #2563eb;      /* Blue 600 - Hover states, emphasis */
+  --color-primary-light: #60a5fa;     /* Blue 400 - Subtle highlights */
+  --color-primary-lighter: #dbeafe;   /* Blue 100 - Backgrounds, badges */
   
-  /* Typography */
-  --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --font-size-xs: 0.75rem;    /* 12px */
-  --font-size-sm: 0.875rem;   /* 14px */
-  --font-size-base: 1rem;     /* 16px */
-  --font-size-lg: 1.125rem;   /* 18px */
-  --font-size-xl: 1.25rem;    /* 20px */
-  --font-size-2xl: 1.5rem;    /* 24px */
-  --font-size-3xl: 2rem;      /* 32px */
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  --line-height-tight: 1.25;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.75;
+  /* Secondary Colors - Accents, secondary actions */
+  --color-secondary: #8b5cf6;         /* Purple 500 - Secondary brand color */
+  --color-secondary-dark: #7c3aed;    /* Purple 600 - Hover states */
+  --color-secondary-light: #a78bfa;   /* Purple 400 - Subtle accents */
   
-  /* Border Radius */
-  --radius-sm: 0.25rem;   /* 4px */
-  --radius-md: 0.5rem;    /* 8px */
-  --radius-lg: 0.75rem;   /* 12px */
-  --radius-full: 9999px;  /* Fully rounded */
+  /* Semantic Colors - Communicate status and feedback */
+  --color-success: #10b981;           /* Green 500 - Success messages, confirmations */
+  --color-success-light: #d1fae5;     /* Green 100 - Success backgrounds */
+  --color-warning: #f59e0b;           /* Amber 500 - Warnings, cautions */
+  --color-warning-light: #fef3c7;     /* Amber 100 - Warning backgrounds */
+  --color-error: #ef4444;             /* Red 500 - Errors, destructive actions */
+  --color-error-light: #fee2e2;       /* Red 100 - Error backgrounds */
+  --color-info: #3b82f6;              /* Blue 500 - Informational messages */
+  --color-info-light: #dbeafe;        /* Blue 100 - Info backgrounds */
   
-  /* Shadows - For depth and elevation */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  /* Neutral Colors - Text, borders, backgrounds */
+  --color-text-primary: #1f2937;      /* Gray 800 - Main text, headings */
+  --color-text-secondary: #6b7280;    /* Gray 500 - Secondary text, captions */
+  --color-text-tertiary: #9ca3af;     /* Gray 400 - Disabled text, placeholders */
+  --color-text-inverse: #ffffff;      /* White - Text on dark backgrounds */
   
-  /* Transitions - For smooth animations */
-  --transition-fast: 150ms ease-in-out;
-  --transition-base: 250ms ease-in-out;
-  --transition-slow: 350ms ease-in-out;
+  --color-background: #ffffff;        /* White - Main page background */
+  --color-surface: #f9fafb;           /* Gray 50 - Cards, panels, elevated surfaces */
+  --color-surface-hover: #f3f4f6;     /* Gray 100 - Hover state for surfaces */
   
-  /* Breakpoints (for reference in media queries) */
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
+  --color-border: #e5e7eb;            /* Gray 200 - Default borders */
+  --color-border-light: #f3f4f6;      /* Gray 100 - Subtle borders */
+  --color-border-dark: #d1d5db;       /* Gray 300 - Emphasized borders */
+  
+  --color-overlay: rgba(0, 0, 0, 0.5); /* Semi-transparent black for modals */
+  
+  /* ============================================
+     SPACING SCALE
+     ============================================
+     Based on 4px base unit for consistent rhythm
+     Use these for margins, padding, gaps
+  */
+  --space-xs: 0.25rem;    /* 4px - Tight spacing, icon gaps */
+  --space-sm: 0.5rem;     /* 8px - Small padding, compact layouts */
+  --space-md: 1rem;       /* 16px - Default spacing, comfortable padding */
+  --space-lg: 1.5rem;     /* 24px - Section spacing, card padding */
+  --space-xl: 2rem;       /* 32px - Large gaps, major sections */
+  --space-2xl: 3rem;      /* 48px - Extra large spacing, page sections */
+  --space-3xl: 4rem;      /* 64px - Huge spacing, hero sections */
+  
+  /* ============================================
+     TYPOGRAPHY SYSTEM
+     ============================================
+     Defines font families, sizes, weights, and line heights
+  */
+  
+  /* Font Families */
+  --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 
+                      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 
+                      'Helvetica Neue', sans-serif;
+  --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', 
+                      Consolas, 'Courier New', monospace;
+  
+  /* Font Sizes - Type scale based on 1rem = 16px */
+  --font-size-xs: 0.75rem;      /* 12px - Small labels, captions */
+  --font-size-sm: 0.875rem;     /* 14px - Secondary text, small buttons */
+  --font-size-base: 1rem;       /* 16px - Body text, default size */
+  --font-size-lg: 1.125rem;     /* 18px - Emphasized text, large buttons */
+  --font-size-xl: 1.25rem;      /* 20px - Small headings, card titles */
+  --font-size-2xl: 1.5rem;      /* 24px - Section headings */
+  --font-size-3xl: 2rem;        /* 32px - Page titles */
+  --font-size-4xl: 2.5rem;      /* 40px - Hero headings */
+  
+  /* Font Weights */
+  --font-weight-normal: 400;    /* Regular text */
+  --font-weight-medium: 500;    /* Slightly emphasized */
+  --font-weight-semibold: 600;  /* Headings, important text */
+  --font-weight-bold: 700;      /* Strong emphasis, CTAs */
+  
+  /* Line Heights - For readability */
+  --line-height-tight: 1.25;    /* Headings, compact text */
+  --line-height-normal: 1.5;    /* Body text, default */
+  --line-height-relaxed: 1.75;  /* Long-form content, better readability */
+  
+  /* ============================================
+     BORDER RADIUS
+     ============================================
+     Consistent corner rounding for UI elements
+  */
+  --radius-none: 0;             /* Sharp corners */
+  --radius-sm: 0.25rem;         /* 4px - Subtle rounding, inputs */
+  --radius-md: 0.5rem;          /* 8px - Default rounding, buttons, cards */
+  --radius-lg: 0.75rem;         /* 12px - Larger elements, modals */
+  --radius-xl: 1rem;            /* 16px - Extra rounded, special elements */
+  --radius-full: 9999px;        /* Fully rounded, pills, avatars */
+  
+  /* ============================================
+     SHADOWS
+     ============================================
+     Elevation system for depth and hierarchy
+  */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  /* ============================================
+     TRANSITIONS
+     ============================================
+     Consistent animation timing for interactions
+  */
+  --transition-fast: 150ms ease-in-out;     /* Quick feedback, hovers */
+  --transition-base: 250ms ease-in-out;     /* Default transitions */
+  --transition-slow: 350ms ease-in-out;     /* Smooth, noticeable changes */
+  
+  /* ============================================
+     Z-INDEX SCALE
+     ============================================
+     Layering system to prevent z-index chaos
+  */
+  --z-dropdown: 1000;           /* Dropdowns, popovers */
+  --z-sticky: 1020;             /* Sticky headers */
+  --z-fixed: 1030;              /* Fixed elements */
+  --z-modal-backdrop: 1040;     /* Modal backgrounds */
+  --z-modal: 1050;              /* Modal content */
+  --z-popover: 1060;            /* Popovers, tooltips */
+  --z-toast: 1070;              /* Toast notifications */
+  
+  /* ============================================
+     BREAKPOINTS (for reference in media queries)
+     ============================================
+     Note: CSS variables can't be used directly in media queries,
+     but we document them here for consistency
+  */
+  --breakpoint-sm: 640px;       /* Small tablets, large phones */
+  --breakpoint-md: 768px;       /* Tablets */
+  --breakpoint-lg: 1024px;      /* Laptops, small desktops */
+  --breakpoint-xl: 1280px;      /* Desktops */
+  --breakpoint-2xl: 1536px;     /* Large desktops */
+  
+  /* ============================================
+     LAYOUT CONSTRAINTS
+     ============================================
+     Maximum widths for content containers
+  */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
 }
 
-/* Dark mode support (optional - can be enabled later) */
+/* ============================================
+   DARK MODE SUPPORT (Post-MVP)
+   ============================================
+   Automatically adapts colors when user has dark mode enabled
+   This respects the user's system preference
+*/
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-text-primary: #f9fafb;
-    --color-text-secondary: #d1d5db;
-    --color-background: #111827;
-    --color-surface: #1f2937;
-    --color-border: #374151;
+    /* Invert text and background colors for dark mode */
+    --color-text-primary: #f9fafb;      /* Light text on dark background */
+    --color-text-secondary: #d1d5db;    /* Lighter secondary text */
+    --color-text-tertiary: #9ca3af;     /* Muted tertiary text */
+    --color-text-inverse: #1f2937;      /* Dark text for light surfaces */
+    
+    --color-background: #111827;        /* Dark background */
+    --color-surface: #1f2937;           /* Elevated dark surfaces */
+    --color-surface-hover: #374151;     /* Hover state for dark surfaces */
+    
+    --color-border: #374151;            /* Darker borders */
+    --color-border-light: #1f2937;      /* Subtle dark borders */
+    --color-border-dark: #4b5563;       /* Emphasized dark borders */
+    
+    --color-overlay: rgba(0, 0, 0, 0.75); /* Darker overlay for modals */
+    
+    /* Adjust semantic color backgrounds for dark mode */
+    --color-success-light: #064e3b;     /* Dark green background */
+    --color-warning-light: #78350f;     /* Dark amber background */
+    --color-error-light: #7f1d1d;       /* Dark red background */
+    --color-info-light: #1e3a8a;        /* Dark blue background */
+    --color-primary-lighter: #1e3a8a;   /* Dark blue background */
+  }
+}
+
+/* ============================================
+   REDUCED MOTION SUPPORT
+   ============================================
+   Respects user's preference for reduced motion (accessibility)
+*/
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-base: 0ms;
+    --transition-slow: 0ms;
   }
 }

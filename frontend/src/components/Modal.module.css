@@ -1,0 +1,360 @@
+/**
+ * Modal Component Styles
+ * 
+ * Scoped styles for the Modal component using CSS Modules.
+ * Modals overlay the page and require careful z-index management.
+ */
+
+/* ============================================
+   Modal Backdrop
+   ============================================
+   Semi-transparent overlay behind the modal
+*/
+.modal__backdrop {
+  /* Positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-modal-backdrop);
+  
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  
+  /* Visual */
+  background-color: var(--color-overlay);
+  
+  /* Animation */
+  animation: fadeIn var(--transition-base);
+  
+  /* Scrolling */
+  overflow-y: auto;
+}
+
+/* Fade in animation for backdrop */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   Modal Container
+   ============================================
+   The actual modal box
+*/
+.modal {
+  /* Positioning */
+  position: relative;
+  z-index: var(--z-modal);
+  
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: calc(100vh - var(--space-xl));
+  
+  /* Visual */
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2xl);
+  
+  /* Animation */
+  animation: slideUp var(--transition-base);
+  
+  /* Remove default focus outline (we'll add custom one) */
+  outline: none;
+}
+
+/* Slide up animation for modal */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Focus state */
+.modal:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Modal Sizes
+   ============================================
+   Different widths for different content amounts
+*/
+
+.modal--small {
+  max-width: 400px;
+}
+
+.modal--medium {
+  max-width: 600px;
+}
+
+.modal--large {
+  max-width: 900px;
+}
+
+.modal--full {
+  max-width: calc(100vw - var(--space-xl));
+  max-height: calc(100vh - var(--space-xl));
+}
+
+/* ============================================
+   Modal Header
+   ============================================
+   Title and close button
+*/
+.modal__header {
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  
+  /* Visual */
+  border-bottom: 1px solid var(--color-border-light);
+  
+  /* Prevent shrinking */
+  flex-shrink: 0;
+}
+
+/* Modal Title */
+.modal__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* Close Button */
+.modal__close {
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  
+  /* Visual */
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  
+  /* Interaction */
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  
+  /* Prevent shrinking */
+  flex-shrink: 0;
+}
+
+.modal__close:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.modal__close:active {
+  background-color: var(--color-surface);
+}
+
+.modal__close:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.modal__closeIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ============================================
+   Modal Content
+   ============================================
+   Container for body and footer
+*/
+.modal__content {
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  
+  /* Scrolling */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   Modal Body
+   ============================================
+   Main content area
+*/
+.modal__body {
+  /* Layout */
+  flex: 1;
+  padding: var(--space-lg);
+  
+  /* Typography */
+  color: var(--color-text-primary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Add spacing between body and footer */
+.modal__body + .modal__footer {
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* ============================================
+   Modal Footer
+   ============================================
+   Action buttons area
+*/
+.modal__footer {
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  
+  /* Prevent shrinking */
+  flex-shrink: 0;
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================
+   Adjust modal for smaller screens
+*/
+
+@media (max-width: 640px) {
+  .modal__backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+  
+  .modal {
+    max-height: 90vh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    animation: slideUpMobile var(--transition-base);
+  }
+  
+  /* Slide up from bottom on mobile */
+  @keyframes slideUpMobile {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .modal--small,
+  .modal--medium,
+  .modal--large,
+  .modal--full {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .modal__header,
+  .modal__body,
+  .modal__footer {
+    padding: var(--space-md);
+  }
+  
+  .modal__title {
+    font-size: var(--font-size-lg);
+  }
+  
+  .modal__footer {
+    flex-direction: column-reverse;
+  }
+  
+  .modal__footer > * {
+    width: 100%;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .modal--large,
+  .modal--full {
+    max-width: calc(100vw - var(--space-xl));
+  }
+}
+
+/* ============================================
+   Accessibility: Reduced Motion
+   ============================================
+   Respect user's motion preferences
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  .modal__backdrop {
+    animation: none;
+  }
+  
+  .modal {
+    animation: none;
+  }
+  
+  .modal__close {
+    transition: none;
+  }
+}
+
+/* ============================================
+   Custom Scrollbar for Modal Content
+   ============================================
+   Style scrollbar inside modal
+*/
+
+.modal__content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal__content::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.modal__content::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-dark);
+  border-radius: var(--radius-full);
+}
+
+.modal__content::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-tertiary);
+}
+
+/* ============================================
+   Print Styles
+   ============================================
+   Hide modals when printing
+*/
+
+@media print {
+  .modal__backdrop {
+    display: none;
+  }
+}

@@ -1,0 +1,229 @@
+/**
+ * App Component Styles
+ * 
+ * This demonstrates how to use our CSS Variables design system in component styles.
+ * Notice how we reference variables like var(--color-primary) instead of hardcoded values.
+ * This ensures consistency and makes theming easy.
+ */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.appHeader {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  padding: var(--space-xl) var(--space-md);
+  text-align: center;
+  box-shadow: var(--shadow-md);
+}
+
+.appHeader h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-inverse);
+}
+
+.appHeader p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-inverse);
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+.appMain {
+  flex: 1;
+  padding: var(--space-xl) var(--space-md);
+  background-color: var(--color-background);
+}
+
+/* Design System Demo Styles */
+.demoContainer {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+}
+
+.demoSection {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.demoSection h2 {
+  color: var(--color-primary);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.colorSwatch {
+  text-align: center;
+}
+
+.colorBox {
+  height: 80px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-sm);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.colorLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-mono);
+}
+
+.spacingDemo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.spacingItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.spacingBox {
+  background-color: var(--color-primary);
+  height: 40px;
+  border-radius: var(--radius-sm);
+}
+
+.spacingLabel {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  min-width: 120px;
+}
+
+.typographyDemo {
+  margin-top: var(--space-md);
+}
+
+.typographyDemo h1,
+.typographyDemo h2,
+.typographyDemo h3,
+.typographyDemo h4,
+.typographyDemo h5,
+.typographyDemo h6 {
+  margin-bottom: var(--space-sm);
+}
+
+.buttonDemo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.demoButton {
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.buttonPrimary {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  border: none;
+}
+
+.buttonPrimary:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.buttonSecondary {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.buttonSecondary:hover {
+  background-color: var(--color-primary-lighter);
+}
+
+.buttonSuccess {
+  background-color: var(--color-success);
+  color: var(--color-text-inverse);
+  border: none;
+}
+
+.buttonSuccess:hover {
+  background-color: #059669;
+  box-shadow: var(--shadow-md);
+}
+
+.buttonWarning {
+  background-color: var(--color-warning);
+  color: var(--color-text-inverse);
+  border: none;
+}
+
+.buttonWarning:hover {
+  background-color: #d97706;
+  box-shadow: var(--shadow-md);
+}
+
+.buttonError {
+  background-color: var(--color-error);
+  color: var(--color-text-inverse);
+  border: none;
+}
+
+.buttonError:hover {
+  background-color: #dc2626;
+  box-shadow: var(--shadow-md);
+}
+
+.shadowDemo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-xl);
+  margin-top: var(--space-md);
+}
+
+.shadowBox {
+  background-color: var(--color-background);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.shadowSm { box-shadow: var(--shadow-sm); }
+.shadowMd { box-shadow: var(--shadow-md); }
+.shadowLg { box-shadow: var(--shadow-lg); }
+.shadowXl { box-shadow: var(--shadow-xl); }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .colorGrid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  
+  .shadowDemo {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: var(--space-md);
+  }
+}

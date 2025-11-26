@@ -1,0 +1,264 @@
+/**
+ * Card Component Styles
+ * 
+ * Scoped styles for the Card component using CSS Modules.
+ * Cards provide visual grouping and elevation for content.
+ */
+
+/* ============================================
+   Base Card Styles
+   ============================================
+   These styles apply to all card variants
+*/
+.card {
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+  /* Visual */
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+  
+  /* Animation */
+  transition: all var(--transition-base);
+  
+  /* Remove default button styles when card is clickable */
+  text-align: left;
+  cursor: default;
+}
+
+/* ============================================
+   Card Variants
+   ============================================
+   Different visual styles for different contexts
+*/
+
+/* Default: Subtle surface with light border */
+.card--default {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  box-shadow: none;
+}
+
+/* Outlined: Clear border, no background change */
+.card--outlined {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  box-shadow: none;
+}
+
+/* Elevated: Raised appearance with shadow */
+.card--elevated {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   Card Padding Options
+   ============================================
+   Different padding sizes for different content densities
+*/
+
+.card--padding-none {
+  padding: 0;
+}
+
+.card--padding-small {
+  padding: var(--space-sm);
+}
+
+.card--padding-medium {
+  padding: var(--space-md);
+}
+
+.card--padding-large {
+  padding: var(--space-lg);
+}
+
+/* ============================================
+   Interactive States
+   ============================================
+   Hover and click effects for interactive cards
+*/
+
+/* Hoverable cards (lift on hover) */
+.card--hoverable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card--hoverable:active {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Clickable cards (entire card is a button) */
+.card--clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.card--clickable:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Combine hoverable and clickable effects */
+.card--clickable.card--hoverable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-light);
+}
+
+.card--clickable.card--hoverable:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================
+   Card Sections
+   ============================================
+   Header, Body, and Footer components
+*/
+
+/* Card Header */
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+/* Remove bottom padding if header is last child */
+.card__header:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Card Body */
+.card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Add spacing between sections */
+.card__header + .card__body {
+  padding-top: var(--space-md);
+}
+
+/* Card Footer */
+.card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* Remove top padding if footer is first child */
+.card__footer:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+/* Add spacing between sections */
+.card__body + .card__footer {
+  padding-top: var(--space-md);
+}
+
+/* ============================================
+   Card with No Padding
+   ============================================
+   Special handling for cards with padding="none"
+   Sections should add their own padding
+*/
+
+.card--padding-none .card__header {
+  padding: var(--space-md);
+  padding-bottom: var(--space-md);
+}
+
+.card--padding-none .card__body {
+  padding: var(--space-md);
+}
+
+.card--padding-none .card__footer {
+  padding: var(--space-md);
+  padding-top: var(--space-md);
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================
+   Adjust card padding on smaller screens
+*/
+
+@media (max-width: 640px) {
+  .card--padding-large {
+    padding: var(--space-md);
+  }
+  
+  .card--padding-medium {
+    padding: var(--space-sm);
+  }
+  
+  .card__header,
+  .card__body,
+  .card__footer {
+    gap: var(--space-sm);
+  }
+  
+  .card--padding-none .card__header,
+  .card--padding-none .card__body,
+  .card--padding-none .card__footer {
+    padding: var(--space-sm);
+  }
+}
+
+/* ============================================
+   Accessibility: Reduced Motion
+   ============================================
+   Respect user's motion preferences
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+  
+  .card--hoverable:hover,
+  .card--clickable.card--hoverable:hover {
+    transform: none;
+  }
+  
+  .card--hoverable:active,
+  .card--clickable.card--hoverable:active {
+    transform: none;
+  }
+}
+
+/* ============================================
+   Print Styles
+   ============================================
+   Optimize cards for printing
+*/
+
+@media print {
+  .card {
+    box-shadow: none;
+    border: 1px solid var(--color-border);
+    page-break-inside: avoid;
+  }
+  
+  .card--hoverable:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
