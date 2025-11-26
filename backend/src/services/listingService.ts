@@ -705,6 +705,279 @@ export async function deleteListing(
 }
 
 /**
+ * Interface for search filters
+ * 
+ * All filters are optional - users can apply any combination
+ */
+export interface SearchFilters {
+  categoryId?: string; // Filter by category
+  listingType?: 'item' | 'service'; // Filter by type
+  minPrice?: number; // Minimum price (inclusive)
+  maxPrice?: number; // Maximum price (inclusive)
+  location?: string; // Filter by location (case-insensitive partial match)
+}
+
+/**
+ * Search listings by query with optional filters
+ * 
+ * This function implements text search with advanced filtering capabilities.
+ * 
+ * Search Strategy:
+ * We use SQL LIKE operator with case-insensitive matching (Prisma's `contains` mode).
+ * The search looks for the query string in both title and description fields.
+ * 
+ * Filter Composition:
+ * Filters use AND logic - all specified filters must match for a listing to be included.
+ * This is called "filter composition" or "query building".
+ * 
+ * Example: If user specifies category=Electronics AND minPrice=100 AND maxPrice=500,
+ * only listings that match ALL three conditions will be returned.
+ * 
+ * Why AND logic?
+ * - Users expect filters to narrow down results, not expand them
+ * - AND logic is more intuitive: "Show me laptops under $500 in Electronics"
+ * - OR logic would be confusing: "Show me laptops OR anything under $500 OR anything in Electronics"
+ * 
+ * Query Building Process:
+ * 1. Start with base filter (status = 'active')
+ * 2. Add text search filter if query provided
+ * 3. Add each optional filter if provided
+ * 4. Combine all filters with AND logic
+ * 5. Execute query with combined filters
+ * 
+ * Prisma Query Building:
+ * Prisma uses a declarative approach to build SQL queries.
+ * We build a filter object that Prisma translates to SQL WHERE clauses.
+ * 
+ * Example filter object:
+ * {
+ *   AND: [
+ *     { status: 'active' },
+ *     { categoryId: 'abc123' },
+ *     { price: { gte: 100, lte: 500 } },
+ *     { listingType: 'item' }
+ *   ]
+ * }
+ * 
+ * This translates to SQL:
+ * WHERE status = 'active'
+ *   AND categoryId = 'abc123'
+ *   AND price >= 100
+ *   AND price <= 500
+ *   AND listingType = 'item'
+ * 
+ * SQL LIKE vs Full-Text Search:
+ * 
+ * SQL LIKE (what we're using):
+ * - Simple pattern matching: WHERE title LIKE '%query%'
+ * - Case-insensitive with Prisma's `contains` mode
+ * - Works on any database without special setup
+ * - Good for MVP and moderate data sizes
+ * - Limitations: No relevance ranking, slower on large datasets
+ * 
+ * Full-Text Search (future enhancement):
+ * - Database-specific feature (PostgreSQL has built-in FTS)
+ * - Creates special indexes for text searching
+ * - Provides relevance ranking (best matches first)
+ * - Handles word variations (stemming: "running" matches "run")
+ * - Much faster on large datasets
+ * - Requires additional setup and configuration
+ * 
+ * Why start with LIKE?
+ * - Simple to implement and understand
+ * - No additional database configuration needed
+ * - Works well for MVP with moderate data
+ * - Easy to upgrade to full-text search later
+ * - Prisma makes it database-agnostic
+ * 
+ * Search Logic:
+ * We use OR logic to search both fields:
+ * - Match if query appears in title OR description
+ * - Case-insensitive matching
+ * - Partial word matching (e.g., "lap" matches "laptop")
+ * 
+ * Example Queries:
+ * - "laptop" → matches "Gaming Laptop" and "laptop for sale"
+ * - "web dev" → matches "Web Development Services"
+ * - "vintage" → matches "Vintage Desk Lamp"
+ * 
+ * Pagination:
+ * Same as getAllListings - uses limit and offset for pagination.
+ * This prevents overwhelming the client with thousands of results.
+ * 
+ * Performance Considerations:
+ * - Only searches active listings (status = 'active')
+ * - Uses eager loading for seller and category info
+ * - Orders by newest first (createdAt DESC)
+ * - Limits results to prevent slow queries
+ * - Database indexes on categoryId, listingType, price, and status speed up filtering
+ * 
+ * Future Enhancements:
+ * - Add relevance ranking (title matches ranked higher than description)
+ * - Implement full-text search with PostgreSQL
+ * - Add search highlighting (show where query appears)
+ * - Support advanced queries (quotes, AND/OR operators)
+ * - Add typo tolerance (fuzzy matching)
+ * - Add distance-based location filtering (requires geocoding)
+ * 
+ * @param query - Search query string (optional - can search with filters only)
+ * @param filters - Optional filters to apply
+ * @param limit - Maximum number of results to return (default: 20)
+ * @param offset - Number of results to skip (default: 0)
+ * @returns Object with matching listings and pagination metadata
+ */
+export async function searchListings(
+  query: string,
+  filters: SearchFilters = {},
+  limit: number = 20,
+  offset: number = 0
+) {
+  // Validate pagination parameters
+  // Ensure limit is reasonable (between 1 and 100)
+  const validLimit = Math.min(Math.max(limit, 1), 100);
+  
+  // Ensure offset is non-negative
+  const validOffset = Math.max(offset, 0);
+
+  // Trim whitespace from query
+  const trimmedQuery = query.trim();
+
+  // Build filter conditions array
+  // We'll add conditions to this array and combine them with AND logic
+  const filterConditions: any[] = [];
+
+  // Condition 1: Only search active listings
+  // This is always applied - we never show sold/deleted listings in search
+  filterConditions.push({ status: 'active' });
+
+  // Condition 2: Text search (if query provided)
+  // Match query in title OR description
+  if (trimmedQuery.length > 0) {
+    filterConditions.push({
+      OR: [
+        {
+          title: {
+            contains: trimmedQuery,
+            mode: 'insensitive' as const, // Case-insensitive search
+          },
+        },
+        {
+          description: {
+            contains: trimmedQuery,
+            mode: 'insensitive' as const,
+          },
+        },
+      ],
+    });
+  }
+
+  // Condition 3: Category filter (if provided)
+  // Filter by specific category ID
+  if (filters.categoryId) {
+    filterConditions.push({ categoryId: filters.categoryId });
+  }
+
+  // Condition 4: Listing type filter (if provided)
+  // Filter by 'item' or 'service'
+  if (filters.listingType) {
+    filterConditions.push({ listingType: filters.listingType });
+  }
+
+  // Condition 5: Price range filter (if provided)
+  // Prisma uses gte (greater than or equal) and lte (less than or equal)
+  // We can specify min, max, or both
+  const priceFilter: any = {};
+  
+  if (filters.minPrice !== undefined) {
+    // gte = Greater Than or Equal
+    // Example: minPrice=100 means price >= 100
+    priceFilter.gte = filters.minPrice;
+  }
+  
+  if (filters.maxPrice !== undefined) {
+    // lte = Less Than or Equal
+    // Example: maxPrice=500 means price <= 500
+    priceFilter.lte = filters.maxPrice;
+  }
+  
+  // Only add price filter if at least one bound is specified
+  if (Object.keys(priceFilter).length > 0) {
+    filterConditions.push({ price: priceFilter });
+  }
+
+  // Condition 6: Location filter (if provided)
+  // Case-insensitive partial match
+  // Example: "New York" matches "New York, NY" and "New York City"
+  if (filters.location) {
+    filterConditions.push({
+      location: {
+        contains: filters.location,
+        mode: 'insensitive' as const,
+      },
+    });
+  }
+
+  // Combine all filter conditions with AND logic
+  // This means ALL conditions must be true for a listing to match
+  const searchFilter = {
+    AND: filterConditions,
+  };
+
+  // Execute search with pagination
+  // We use Promise.all to run both queries in parallel for better performance
+  const [listings, totalCount] = await Promise.all([
+    // Query 1: Get matching listings with seller and category information
+    prisma.listing.findMany({
+      where: searchFilter,
+      // Include seller and category information using eager loading
+      // This prevents the N+1 query problem
+      include: {
+        seller: {
+          select: {
+            id: true,
+            username: true,
+            profilePicture: true,
+            averageRating: true,
+            joinDate: true,
+            // Exclude sensitive fields like email and passwordHash
+          },
+        },
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+      },
+      // Order by newest first
+      // This ensures users see the most recent listings
+      orderBy: {
+        createdAt: 'desc',
+      },
+      // Pagination parameters
+      take: validLimit, // How many to return
+      skip: validOffset, // How many to skip
+    }),
+
+    // Query 2: Get total count of matching listings
+    // This is needed for pagination UI (e.g., "Page 1 of 50")
+    prisma.listing.count({
+      where: searchFilter,
+    }),
+  ]);
+
+  // Return results with pagination metadata
+  return {
+    listings,
+    totalCount,
+    limit: validLimit,
+    offset: validOffset,
+    hasMore: validOffset + validLimit < totalCount,
+  };
+}
+
+/**
  * Check if a category exists
  * 
  * Helper function to validate category IDs

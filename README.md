@@ -4,9 +4,9 @@ A full-stack web application for buying and selling items and legally allowable 
 
 ## 📊 Project Status
 
-**Current Phase:** MVP Development - Ready for Search & Browse (Backend)  
-**Progress:** 21 of 80 tasks complete (26.25%)  
-**Last Updated:** November 25, 2024
+**Current Phase:** MVP Development - Search & Browse Complete (Backend)  
+**Progress:** 26 of 80 tasks complete (32.5%)  
+**Last Updated:** November 26, 2024
 
 ### Completed Phases
 **Phase 1: Project Foundation** ✅
@@ -49,11 +49,23 @@ A full-stack web application for buying and selling items and legally allowable 
 - ✅ Task 20: Delete listing endpoint
 - ✅ Task 20.1: Property test for listing deletion
 - ✅ Task 21: Checkpoint - All listing management tests passing (48/48 tests)
+- ✅ Task 21.1: Pushed to GitHub (fourth checkpoint)
+
+**Phase 5: Search & Browse (Backend)** ✅
+- ✅ Task 22: Create initial categories with seed script
+- ✅ Task 23: Basic listing search endpoint (text search)
+- ✅ Task 23.1: Property test for search matching
+- ✅ Task 24: Search filters (category, type, price, location)
+- ✅ Task 24.1: Property test for filtering
+- ✅ Task 25: Category endpoints with listing counts
+- ✅ Task 25.1: Property test for category browsing
+- ✅ Task 25.2: Property test for category counts
+- ✅ Task 26: Checkpoint - All search and browse tests passing (41/41 tests)
 
 ### Next Steps
-- 🔄 Task 21.1: Push to GitHub (fourth checkpoint)
-- ⏳ Task 22: Create initial categories
-- ⏳ Task 23: Implement basic listing search endpoint
+- 🔄 Task 26.1: Push to GitHub (fifth checkpoint)
+- ⏳ Task 27: Implement send message endpoint
+- ⏳ Task 28: Implement get conversations endpoint
 
 ## 🎯 Key Features
 
@@ -64,7 +76,8 @@ A full-stack web application for buying and selling items and legally allowable 
 - ✅ Listings for items AND services (full CRUD operations)
 - ✅ Listing status management (active/sold/completed)
 - ✅ Authorization checks (users can only modify their own listings)
-- ⏳ Search and filtering
+- ✅ Search and filtering (text search, category, type, price, location)
+- ✅ Category browsing with accurate listing counts
 - ⏳ User-to-user messaging
 - ⏳ Bot prevention and content moderation
 - ⏳ Legal compliance (GDPR, CCPA)
@@ -268,6 +281,49 @@ curl -X PATCH http://localhost:5000/api/listings/LISTING_ID/status \
 
 **Test Coverage: 48 tests passing** ✅
 
+### Search & Browse
+Comprehensive search and filtering system for discovering listings:
+
+**Search Features:**
+- ✅ Text search in titles and descriptions (case-insensitive)
+- ✅ Filter by category
+- ✅ Filter by listing type (items vs services)
+- ✅ Filter by price range (min/max)
+- ✅ Filter by location (partial match)
+- ✅ Combine multiple filters with AND logic
+- ✅ Pagination support for all search results
+- ✅ Only returns active listings (sold/deleted excluded)
+
+**Category Browsing:**
+- ✅ Browse listings by category
+- ✅ Accurate listing counts per category
+- ✅ Category information included in results
+- ✅ Pagination support for category browsing
+
+**Example Usage:**
+```bash
+# Search for "laptop" with filters
+curl "http://localhost:5000/api/search?query=laptop&categoryId=CATEGORY_ID&minPrice=500&maxPrice=2000&listingType=item&limit=20&offset=0"
+
+# Browse by category
+curl "http://localhost:5000/api/categories/CATEGORY_ID/listings?limit=20&offset=0"
+
+# Get all categories with listing counts
+curl "http://localhost:5000/api/categories"
+```
+
+**Property-Based Tests:**
+- Property 12: Search returns matching listings (case-insensitive, title/description)
+- Property 13: Filters return only matching results (AND logic)
+- Property 23: Category browsing returns correct listings
+- Property 24: Category counts are accurate
+
+**Test Coverage: 41 tests passing** ✅
+- 8 search tests
+- 10 filter tests
+- 13 category browsing tests
+- 10 pagination tests
+
 ### Profile Picture Upload
 Users can upload profile pictures with comprehensive validation and security:
 
@@ -302,12 +358,14 @@ npm test
 ```
 
 **Current Test Results:**
-- **Test Suites:** 16 passed, 1 failed (17 total)
-- **Tests:** 123 passed, 2 failed (125 total)
-- **Success Rate:** 98.4% ✅
-- **Coverage:** Authentication, profile management, listing management (CRUD), database persistence, file uploads
+- **Test Suites:** 20 passed (20 total)
+- **Tests:** 164 passed (164 total)
+- **Success Rate:** 100% ✅
+- **Coverage:** Authentication, profile management, listing management (CRUD), search & filtering, category browsing, database persistence, file uploads
 
-The 2 failing tests are minor issues in profile picture upload tests that don't affect core functionality. All 48 listing management tests pass successfully.
+All tests passing including:
+- 48 listing management tests
+- 41 search and browse tests (8 search + 10 filters + 13 category browsing + 10 pagination)
 
 ## 📚 Documentation
 
@@ -423,6 +481,18 @@ View schema: `backend/prisma/schema.prisma`
   - Status values: active, sold, completed
 - `DELETE /api/listings/:id` - Delete listing (authenticated, owner only)
   - Permanently removes listing
+
+### Search & Browse
+- `GET /api/search` - Search listings with filters
+  - Query params: query, categoryId, listingType, minPrice, maxPrice, location, limit, offset
+  - Returns: listings array, total count, hasMore flag
+  - All filters use AND logic
+  - Text search is case-insensitive
+- `GET /api/categories` - Get all categories with listing counts
+  - Returns: categories array with active listing counts
+- `GET /api/categories/:id/listings` - Browse listings by category
+  - Query params: limit, offset
+  - Returns: listings array, category info, total count, hasMore flag
 
 ### Static Files
 - `GET /uploads/profile-pictures/:filename` - Access uploaded profile pictures

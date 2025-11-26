@@ -14,7 +14,7 @@
 import { Response } from 'express';
 import { Request } from 'express';
 import { AuthenticatedRequest } from '../middleware/authMiddleware';
-import { createListing, getListingById, getAllListings, updateListing, updateListingStatus, deleteListing } from '../services/listingService';
+import { createListing, getListingById, getAllListings, updateListing, updateListingStatus, deleteListing, searchListings } from '../services/listingService';
 
 /**
  * Create a new listing
@@ -1137,6 +1137,320 @@ export async function deleteListingHandler(
       error: {
         code: 'INTERNAL_ERROR',
         message: 'An unexpected error occurred while deleting the listing',
+      },
+    });
+  }
+}
+
+/**
+ * Search listings by query with optional filters
+ * 
+ * GET /api/search
+ * 
+ * Authentication: Not required (public endpoint)
+ * Anyone can search listings
+ * 
+ * Query Parameters:
+ * - q: string (optional) - The search query (can search with filters only)
+ * - categoryId: string (optional) - Filter by category ID
+ * - listingType: string (optional) - Filter by 'item' or 'service'
+ * - minPrice: number (optional) - Minimum price (inclusive)
+ * - maxPrice: number (optional) - Maximum price (inclusive)
+ * - location: string (optional) - Filter by location (partial match)
+ * - limit: number (optional, default: 20) - How many listings to return
+ * - offset: number (optional, default: 0) - How many listings to skip
+ * 
+ * Query Parameter Explanation:
+ * Query parameters are key-value pairs in the URL after the ? symbol.
+ * Multiple parameters are separated by & symbols.
+ * 
+ * Example URLs:
+ * - /api/search?q=laptop → Search for "laptop"
+ * - /api/search?q=laptop&categoryId=abc123 → Search for "laptop" in specific category
+ * - /api/search?categoryId=abc123&listingType=item → Browse items in category (no text search)
+ * - /api/search?q=desk&minPrice=50&maxPrice=200 → Search for "desk" between $50-$200
+ * - /api/search?listingType=service&location=New+York → Find services in New York
+ * 
+ * Filter Combination (AND Logic):
+ * All specified filters must match for a listing to be included.
+ * This is called "filter composition" - filters narrow down results.
+ * 
+ * Example: ?q=laptop&categoryId=electronics&minPrice=500&maxPrice=1000
+ * Returns: Laptops in Electronics category priced between $500-$1000
+ * 
+ * Why AND logic?
+ * - Users expect filters to narrow results, not expand them
+ * - More intuitive: "Show me laptops under $500 in Electronics"
+ * - OR logic would be confusing: "Show me laptops OR anything under $500 OR anything in Electronics"
+ * 
+ * Search Behavior:
+ * - Searches in both title and description fields
+ * - Case-insensitive matching (LAPTOP = laptop = Laptop)
+ * - Partial word matching ("lap" matches "laptop")
+ * - OR logic for text search: matches if query appears in title OR description
+ * - AND logic for filters: all filters must match
+ * - Only returns active listings (not sold/completed/deleted)
+ * 
+ * Filter Details:
+ * 
+ * 1. Category Filter (categoryId):
+ *    - Exact match on category ID
+ *    - Example: categoryId=abc-123-def
+ *    - Use GET /api/categories to get available category IDs
+ * 
+ * 2. Listing Type Filter (listingType):
+ *    - Must be 'item' or 'service'
+ *    - Example: listingType=item (physical goods only)
+ *    - Example: listingType=service (services only)
+ * 
+ * 3. Price Range Filter (minPrice, maxPrice):
+ *    - Numeric values (dollars)
+ *    - Can specify min, max, or both
+ *    - Example: minPrice=100 (at least $100)
+ *    - Example: maxPrice=500 (at most $500)
+ *    - Example: minPrice=100&maxPrice=500 (between $100-$500)
+ * 
+ * 4. Location Filter (location):
+ *    - Case-insensitive partial match
+ *    - Example: location=New+York matches "New York, NY" and "New York City"
+ *    - Example: location=Remote matches "Remote" and "Remote Work"
+ * 
+ * Example Searches:
+ * - /api/search?q=laptop → All laptops
+ * - /api/search?q=laptop&listingType=item → Physical laptop items only
+ * - /api/search?q=web+dev&listingType=service → Web development services
+ * - /api/search?categoryId=abc123 → All items in category (browse mode)
+ * - /api/search?minPrice=100&maxPrice=500 → All items $100-$500
+ * - /api/search?q=desk&location=New+York&maxPrice=200 → Desks in NY under $200
+ * 
+ * Success response (200 OK):
+ * {
+ *   listings: [
+ *     {
+ *       id: string,
+ *       sellerId: string,
+ *       title: string,
+ *       description: string,
+ *       price: number,
+ *       listingType: string,
+ *       pricingType: string | null,
+ *       categoryId: string,
+ *       images: string[],
+ *       status: string,
+ *       location: string,
+ *       createdAt: Date,
+ *       updatedAt: Date,
+ *       seller: {
+ *         id: string,
+ *         username: string,
+ *         profilePicture: string | null,
+ *         averageRating: number,
+ *         joinDate: Date
+ *       },
+ *       category: {
+ *         id: string,
+ *         name: string,
+ *         slug: string
+ *       }
+ *     },
+ *     // ... more listings
+ *   ],
+ *   totalCount: number,
+ *   limit: number,
+ *   offset: number,
+ *   hasMore: boolean,
+ *   query: string | null,
+ *   filters: {
+ *     categoryId?: string,
+ *     listingType?: string,
+ *     minPrice?: number,
+ *     maxPrice?: number,
+ *     location?: string
+ *   }
+ * }
+ * 
+ * Pagination Metadata:
+ * - totalCount: Total number of matching listings
+ * - limit: The limit used (may differ from requested if invalid)
+ * - offset: The offset used
+ * - hasMore: Whether there are more results to load
+ * - query: The search query used (null if no text search)
+ * - filters: The filters applied (for frontend convenience)
+ * 
+ * Error responses:
+ * - 400 Bad Request: Invalid filter values or pagination parameters
+ * - 500 Internal Server Error: Unexpected error
+ * 
+ * Why is this endpoint public?
+ * - Users should be able to search before signing up
+ * - Encourages user registration by showing available items
+ * - Allows search engines to index listings (SEO)
+ * 
+ * Performance Considerations:
+ * - Only searches active listings
+ * - Uses eager loading to include seller info efficiently
+ * - Limits maximum page size to prevent abuse
+ * - Orders by newest first for better user experience
+ * - Database indexes on categoryId, listingType, price, and status speed up filtering
+ * 
+ * Full-Text Search vs SQL LIKE:
+ * 
+ * Current Implementation (SQL LIKE):
+ * - Simple pattern matching
+ * - Works: WHERE title LIKE '%query%' OR description LIKE '%query%'
+ * - Pros: Easy to implement, no setup, works everywhere
+ * - Cons: Slower on large datasets, no relevance ranking
+ * 
+ * Future Enhancement (Full-Text Search):
+ * - PostgreSQL has built-in full-text search
+ * - Creates special indexes for text searching
+ * - Provides relevance ranking (best matches first)
+ * - Handles word variations (stemming)
+ * - Much faster on large datasets
+ * 
+ * For MVP, SQL LIKE is sufficient. We can upgrade to full-text search
+ * later when we have more data and need better performance.
+ * 
+ * Search Quality Tips:
+ * - Use specific keywords (e.g., "vintage desk lamp" vs "lamp")
+ * - Try different word orders (e.g., "desk vintage" vs "vintage desk")
+ * - Use singular/plural forms (e.g., "laptop" vs "laptops")
+ * - Combine text search with filters for best results
+ * - Use price range to narrow expensive/cheap items
+ * - Use location filter to find local items
+ */
+export async function searchListingsHandler(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    // Extract search query from query parameters
+    // Query is now optional - users can search with filters only
+    const query = (req.query.q as string | undefined) || '';
+
+    // Extract filter parameters from query string
+    const categoryId = req.query.categoryId as string | undefined;
+    const listingType = req.query.listingType as string | undefined;
+    const minPriceParam = req.query.minPrice as string | undefined;
+    const maxPriceParam = req.query.maxPrice as string | undefined;
+    const location = req.query.location as string | undefined;
+
+    // Extract pagination parameters from query string
+    const limitParam = req.query.limit as string | undefined;
+    const offsetParam = req.query.offset as string | undefined;
+
+    // Validate listingType if provided
+    if (listingType && listingType !== 'item' && listingType !== 'service') {
+      res.status(400).json({
+        error: {
+          code: 'INVALID_LISTING_TYPE',
+          message: 'Listing type must be either "item" or "service"',
+        },
+      });
+      return;
+    }
+
+    // Parse and validate price filters
+    let minPrice: number | undefined;
+    let maxPrice: number | undefined;
+
+    if (minPriceParam) {
+      minPrice = parseFloat(minPriceParam);
+      if (isNaN(minPrice) || minPrice < 0) {
+        res.status(400).json({
+          error: {
+            code: 'INVALID_MIN_PRICE',
+            message: 'Minimum price must be a non-negative number',
+          },
+        });
+        return;
+      }
+    }
+
+    if (maxPriceParam) {
+      maxPrice = parseFloat(maxPriceParam);
+      if (isNaN(maxPrice) || maxPrice < 0) {
+        res.status(400).json({
+          error: {
+            code: 'INVALID_MAX_PRICE',
+            message: 'Maximum price must be a non-negative number',
+          },
+        });
+        return;
+      }
+    }
+
+    // Validate price range logic
+    if (minPrice !== undefined && maxPrice !== undefined && minPrice > maxPrice) {
+      res.status(400).json({
+        error: {
+          code: 'INVALID_PRICE_RANGE',
+          message: 'Minimum price cannot be greater than maximum price',
+        },
+      });
+      return;
+    }
+
+    // Parse limit with default value of 20
+    let limit = 20;
+    if (limitParam) {
+      const parsedLimit = parseInt(limitParam, 10);
+      if (!isNaN(parsedLimit)) {
+        limit = parsedLimit;
+      }
+    }
+
+    // Parse offset with default value of 0
+    let offset = 0;
+    if (offsetParam) {
+      const parsedOffset = parseInt(offsetParam, 10);
+      if (!isNaN(parsedOffset)) {
+        offset = parsedOffset;
+      }
+    }
+
+    // Validate pagination parameters
+    if (limit < 0 || offset < 0) {
+      res.status(400).json({
+        error: {
+          code: 'INVALID_PAGINATION',
+          message: 'Limit and offset must be non-negative numbers',
+        },
+      });
+      return;
+    }
+
+    // Build filters object
+    const filters: any = {};
+    
+    if (categoryId) filters.categoryId = categoryId;
+    if (listingType) filters.listingType = listingType;
+    if (minPrice !== undefined) filters.minPrice = minPrice;
+    if (maxPrice !== undefined) filters.maxPrice = maxPrice;
+    if (location) filters.location = location;
+
+    // Call service to search listings with filters
+    const result = await searchListings(query, filters, limit, offset);
+
+    // Return search results with pagination metadata
+    res.status(200).json({
+      listings: result.listings,
+      totalCount: result.totalCount,
+      limit: result.limit,
+      offset: result.offset,
+      hasMore: result.hasMore,
+      query: query || null, // Echo back the query for frontend convenience
+      filters: filters, // Echo back the filters applied
+    });
+  } catch (error) {
+    // Log unexpected errors
+    console.error('Search listings error:', error);
+
+    // Return generic error to client
+    res.status(500).json({
+      error: {
+        code: 'INTERNAL_ERROR',
+        message: 'An unexpected error occurred while searching listings',
       },
     });
   }

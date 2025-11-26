@@ -274,6 +274,7 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
 
 
 
+
   - Ensure all tests pass, ask the user if questions arise
   - Test create, read, update, delete operations
   - Test both item and service listings
@@ -291,24 +292,41 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
 
 ## Phase 5: Search & Browse (Backend)
 
-- [ ] 22. Create initial categories
+- [x] 22. Create initial categories
+
+
+
+
+
   - Create seed script to populate categories table
   - Add common marketplace categories (Electronics, Furniture, Services, etc.)
   - **Educational focus**: Explain database seeding, initial data
   - _Requirements: 8.1_
 
-- [ ] 23. Implement basic listing search endpoint
+- [x] 23. Implement basic listing search endpoint
+
+
+
+
+
   - Create search controller with query parameter (GET /api/search)
   - Search in title and description
   - Return paginated results
   - **Educational focus**: Explain full-text search, pagination, SQL LIKE vs full-text indexes
   - _Requirements: 4.2_
 
-- [ ] 23.1 Write property test for search matching
+- [x] 23.1 Write property test for search matching
+
+
   - **Property 12: Search returns matching listings**
   - **Validates: Requirements 4.2**
 
-- [ ] 24. Implement search filters
+- [x] 24. Implement search filters
+
+
+
+
+
   - Add category filter to search endpoint
   - Add listing type filter (item/service)
   - Add price range filter
@@ -317,32 +335,48 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Educational focus**: Explain query building, filter composition
   - _Requirements: 4.3, 4.4, 4.5, 4.6_
 
-- [ ] 24.1 Write property test for filtering
+- [x] 24.1 Write property test for filtering
+
+
   - **Property 13: Filters return only matching results**
   - **Validates: Requirements 4.3, 4.4, 4.5, 4.6**
 
-- [ ] 25. Implement category endpoints
+- [x] 25. Implement category endpoints
+
+
+
+
+
   - Create get all categories endpoint (GET /api/categories)
   - Include listing counts per category
   - **Educational focus**: Explain aggregation queries, GROUP BY
   - _Requirements: 8.2, 8.3_
 
-- [ ] 25.1 Write property test for category browsing
+- [x] 25.1 Write property test for category browsing
+
+
   - **Property 23: Category browsing returns correct listings**
   - **Validates: Requirements 8.2**
 
-- [ ] 25.2 Write property test for category counts
+- [x] 25.2 Write property test for category counts
+
   - **Property 24: Category counts are accurate**
   - **Validates: Requirements 8.3**
 
 - [ ] 26. Checkpoint: Test search and browse functionality
+
+
+
+
   - Ensure all tests pass, ask the user if questions arise
   - Test search with various queries
   - Test all filter combinations
   - Test category browsing
   - Verify pagination works
 
-- [ ] 26.1 Push to GitHub
+- [-] 26.1 Push to GitHub
+
+
   - Commit search and browse functionality
   - Update PROGRESS.md
   - Push to GitHub

@@ -5,6 +5,7 @@ import path from 'path';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
 import listingRoutes from './routes/listingRoutes';
+import categoryRoutes from './routes/categoryRoutes';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -84,6 +85,16 @@ app.use('/api/users', userRoutes);
 // Listing routes - mounted at /api/listings
 // These routes handle creating, viewing, and managing listings
 app.use('/api/listings', listingRoutes);
+
+// Category routes - mounted at /api/categories
+// These routes handle browsing categories and viewing listings by category
+app.use('/api/categories', categoryRoutes);
+
+// Search route - mounted at /api/search
+// This is a separate endpoint from /api/listings because search is a distinct operation
+// that doesn't fit the RESTful resource pattern of /api/listings
+import { searchListingsHandler } from './controllers/listingController';
+app.get('/api/search', searchListingsHandler);
 
 // 404 handler for undefined routes
 app.use((_req: Request, res: Response) => {
