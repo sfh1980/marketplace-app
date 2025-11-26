@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
 import listingRoutes from './routes/listingRoutes';
 import categoryRoutes from './routes/categoryRoutes';
+import messageRoutes from './routes/messageRoutes';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -89,6 +90,10 @@ app.use('/api/listings', listingRoutes);
 // Category routes - mounted at /api/categories
 // These routes handle browsing categories and viewing listings by category
 app.use('/api/categories', categoryRoutes);
+
+// Message routes - mounted at /api/messages
+// These routes handle sending and retrieving messages between users
+app.use('/api/messages', messageRoutes);
 
 // Search route - mounted at /api/search
 // This is a separate endpoint from /api/listings because search is a distinct operation

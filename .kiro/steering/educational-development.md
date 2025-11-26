@@ -37,6 +37,13 @@ When implementing:
 - Show test results before proceeding
 - Use test failures as learning opportunities
 
+### 4.5 Update Documentation at Checkpoints
+- After completing tasks, update all documentation files
+- Count completed tasks in tasks.md (source of truth)
+- Update progress counters in README.md, PROGRESS.md, CURRENT-STATUS.md
+- Update current task and phase information
+- Ensure all files show consistent information
+
 ### 5. Document Progress
 Maintain a `PROGRESS.md` file tracking:
 - What has been implemented
@@ -177,6 +184,25 @@ Natural testing checkpoints include:
 - After authentication is working
 - After search functionality is implemented
 - Before integrating new major features
+
+## Documentation Update Checkpoints
+
+Update all documentation at these points:
+- After completing each "Push to GitHub" task
+- After completing each phase
+- After major milestones
+- When tasks.md is updated with completed tasks
+
+**Files to update:**
+1. README.md - Progress counter, current phase, completed tasks
+2. PROGRESS.md - Progress counter, completed tasks list, current task
+3. CURRENT-STATUS.md - Progress counter, current task, phase status
+
+**Process:**
+1. Count all [x] checkboxes in tasks.md
+2. Calculate percentage: (completed / 80) × 100
+3. Identify first [ ] task as current task
+4. Update all three files with consistent information
 
 ## Pacing
 
