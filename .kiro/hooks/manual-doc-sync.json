@@ -1,0 +1,12 @@
+{
+  "name": "Manual Documentation Sync",
+  "description": "Manually trigger a comprehensive documentation review and update to ensure all files are consistent and accurate",
+  "enabled": true,
+  "trigger": {
+    "type": "manual"
+  },
+  "action": {
+    "type": "sendMessage",
+    "message": "Performing comprehensive documentation synchronization...\n\n**STEP 1: Analyze Current State**\n- Read .kiro/specs/marketplace-platform/tasks.md\n- Count all completed tasks (marked with [x])\n- Identify current task (first task marked with [ ])\n- Determine current phase\n- Calculate progress percentage\n\n**STEP 2: Review All Documentation Files**\nCheck these files for accuracy:\n1. README.md\n   - Project Status section\n   - Progress counter\n   - Completed tasks list\n   - Current phase\n   - Next steps\n\n2. PROGRESS.md\n   - Status header\n   - Progress counter\n   - Completed tasks section\n   - Current task section\n   - Session logs\n\n3. CURRENT-STATUS.md\n   - Progress counter\n   - Current task\n   - Current phase\n   - Completed work summary\n\n4. PROJECT-STATUS.md (if exists)\n   - Overall progress\n   - Phase completion status\n\n**STEP 3: Identify Discrepancies**\n- List any inconsistencies found\n- Note which files have incorrect information\n- Identify missing updates\n\n**STEP 4: Update All Files**\n- Correct all inaccurate information\n- Ensure consistency across all documentation\n- Update progress counters\n- Update task lists\n- Update phase information\n\n**STEP 5: Verification**\n- Confirm all files now show the same:\n  - Task count\n  - Current task\n  - Current phase\n  - Progress percentage\n\n**STEP 6: Summary Report**\nProvide a summary including:\n- Total tasks completed\n- Current task and phase\n- Files that were updated\n- What was corrected in each file\n\nBe thorough and ensure 100% accuracy across all documentation."
+  }
+}

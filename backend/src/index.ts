@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
 
@@ -15,6 +16,45 @@ const PORT = process.env.PORT || 5000;
 app.use(cors()); // Enable Cross-Origin Resource Sharing for frontend
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+
+/**
+ * Serve static files from uploads directory
+ * 
+ * What is static file serving?
+ * - Serves files directly from filesystem
+ * - No processing or transformation
+ * - Used for images, CSS, JavaScript, etc.
+ * 
+ * Why do we need this?
+ * - Profile pictures are stored in uploads/profile-pictures/
+ * - Frontend needs to access these images via URL
+ * - Express doesn't serve files by default (security)
+ * - We explicitly enable serving from uploads directory
+ * 
+ * How it works:
+ * - URL: http://localhost:5000/uploads/profile-pictures/image.jpg
+ * - Maps to: backend/uploads/profile-pictures/image.jpg
+ * - Express sends the file to the browser
+ * - Browser displays the image
+ * 
+ * Security considerations:
+ * - Only uploads directory is exposed (not entire filesystem)
+ * - Files cannot be executed (only downloaded)
+ * - No directory listing (can't browse all files)
+ * - Path traversal attacks prevented by Express
+ * 
+ * Example URLs:
+ * - /uploads/profile-pictures/user123-1234567890-abc.jpg
+ * - /uploads/listings/listing456-1234567890-xyz.jpg (future)
+ * 
+ * Alternative approaches:
+ * - Cloud storage (AWS S3, Cloudinary) - better for production
+ * - CDN (CloudFront, Cloudflare) - faster delivery
+ * - Nginx/Apache - more efficient for static files
+ * 
+ * For MVP, this simple approach works well for development.
+ */
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Health check endpoint - useful for monitoring and deployment
 app.get('/health', (_req: Request, res: Response) => {

@@ -38,3 +38,8 @@ Thumbs.db
 # Note: We DO want to commit migrations/ folder
 # Only ignore the migration lock if using multiple databases
 # prisma/migrations/migration_lock.toml
+
+# Uploads
+# User-uploaded files should not be committed to git
+# In production, these would be stored in cloud storage (S3, Cloudinary)
+uploads/

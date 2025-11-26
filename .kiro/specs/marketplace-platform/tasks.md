@@ -168,7 +168,9 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Educational focus**: Explain secure token generation, time-based expiration
   - _Requirements: 1.5_
 
-- [-] 10. Checkpoint: Test authentication flow
+- [x] 10. Checkpoint: Test authentication flow
+
+
 
 
 
@@ -178,7 +180,8 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - Verify JWT tokens work correctly
   - **Educational focus**: How to test APIs with Postman/curl
 
-- [-] 10.1 Push to GitHub
+- [x] 10.1 Push to GitHub
+
 
   - Commit authentication implementation
   - Update PROGRESS.md with authentication milestone
@@ -189,35 +192,56 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
 
 ## Phase 3: User Profile Management (Backend)
 
-- [ ] 11. Implement get user profile endpoint
+- [x] 11. Implement get user profile endpoint
+
+
+
+
+
   - Create profile retrieval controller
   - Include user's listings in response
   - **Educational focus**: Explain REST API design, resource relationships
   - _Requirements: 2.3_
 
-- [ ] 11.1 Write property test for profile view
+- [x] 11.1 Write property test for profile view
+
+
   - **Property 6: Profile view contains required information**
   - **Validates: Requirements 2.3**
 
-- [ ] 12. Implement update user profile endpoint
+- [x] 12. Implement update user profile endpoint
+
+
+
+
+
   - Create profile update controller
   - Validate profile data
   - Handle partial updates
   - **Educational focus**: Explain PUT vs PATCH, data validation
   - _Requirements: 2.1, 2.4_
 
-- [ ] 12.1 Write property test for profile updates
+- [x] 12.1 Write property test for profile updates
+
+
   - **Property 5: Profile updates persist correctly**
   - **Validates: Requirements 2.1, 2.2, 2.4**
 
-- [ ] 13. Implement profile picture upload
+- [x] 13. Implement profile picture upload
+
+
+
+
+
   - Set up Multer for file uploads
   - Add image validation (type, size)
   - Store images to local filesystem (MVP) or cloud storage
   - **Educational focus**: Explain file uploads, multipart/form-data, image validation
   - _Requirements: 2.2_
 
-- [ ] 14. Checkpoint: Test user profile management
+- [-] 14. Checkpoint: Test user profile management
+
+
   - Ensure all tests pass, ask the user if questions arise
   - Test profile retrieval, updates, and image upload
   - Verify authentication is required for updates

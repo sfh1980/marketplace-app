@@ -250,3 +250,148 @@ export function validateRegistrationData(
     errors,
   };
 }
+
+/**
+ * Validate location string
+ * 
+ * Requirements:
+ * - Optional (can be null/empty)
+ * - If provided, must be reasonable length
+ * - No special validation needed (free-form text)
+ * 
+ * Why minimal validation?
+ * - Location formats vary globally (city, state, country)
+ * - Users might enter "New York, NY" or "London, UK" or "Tokyo"
+ * - Better to be flexible than restrictive
+ * - Can add geocoding/validation later if needed
+ * 
+ * @param location - Location string to validate
+ * @returns Validation result with error message if invalid
+ */
+export function validateLocation(location: string | null | undefined): ValidationResult {
+  // Location is optional - null/undefined is valid
+  if (location === null || location === undefined || location.trim().length === 0) {
+    return { isValid: true };
+  }
+
+  // Check maximum length (reasonable limit)
+  if (location.length > 100) {
+    return {
+      isValid: false,
+      error: 'Location must be at most 100 characters',
+    };
+  }
+
+  return { isValid: true };
+}
+
+/**
+ * Validate profile picture URL
+ * 
+ * Requirements:
+ * - Optional (can be null/empty)
+ * - If provided, must be valid URL format
+ * - Should be HTTPS for security
+ * 
+ * Why validate URLs?
+ * - Prevent XSS attacks via javascript: URLs
+ * - Ensure images can be loaded (valid URL format)
+ * - Encourage HTTPS for security
+ * 
+ * Note: This doesn't verify the URL actually points to an image
+ * That validation happens during upload/processing
+ * 
+ * @param url - Profile picture URL to validate
+ * @returns Validation result with error message if invalid
+ */
+export function validateProfilePictureUrl(url: string | null | undefined): ValidationResult {
+  // Profile picture is optional - null/undefined is valid
+  if (url === null || url === undefined || url.trim().length === 0) {
+    return { isValid: true };
+  }
+
+  // Check if it's a valid URL format
+  try {
+    const parsedUrl = new URL(url);
+    
+    // Ensure it's HTTP or HTTPS (not javascript:, data:, etc.)
+    if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+      return {
+        isValid: false,
+        error: 'Profile picture URL must use HTTP or HTTPS protocol',
+      };
+    }
+    
+    // Warn if not HTTPS (but allow for development)
+    // In production, you might want to enforce HTTPS only
+    
+  } catch (error) {
+    return {
+      isValid: false,
+      error: 'Invalid profile picture URL format',
+    };
+  }
+
+  // Check maximum length
+  if (url.length > 500) {
+    return {
+      isValid: false,
+      error: 'Profile picture URL is too long (max 500 characters)',
+    };
+  }
+
+  return { isValid: true };
+}
+
+/**
+ * Validate profile update data
+ * 
+ * This validates partial updates - only validates fields that are provided.
+ * Undefined fields are not validated (they won't be updated).
+ * 
+ * Why partial validation?
+ * - Supports PATCH semantics (partial updates)
+ * - User can update just username, just location, or both
+ * - More flexible and user-friendly
+ * 
+ * @param username - Username (optional)
+ * @param location - Location (optional)
+ * @param profilePicture - Profile picture URL (optional)
+ * @returns Object with validity status and array of error messages
+ */
+export function validateProfileUpdateData(
+  username?: string,
+  location?: string | null,
+  profilePicture?: string | null
+): { isValid: boolean; errors: string[] } {
+  const errors: string[] = [];
+
+  // Only validate username if it's provided
+  if (username !== undefined) {
+    const usernameResult = validateUsername(username);
+    if (!usernameResult.isValid && usernameResult.error) {
+      errors.push(usernameResult.error);
+    }
+  }
+
+  // Only validate location if it's provided
+  if (location !== undefined) {
+    const locationResult = validateLocation(location);
+    if (!locationResult.isValid && locationResult.error) {
+      errors.push(locationResult.error);
+    }
+  }
+
+  // Only validate profile picture if it's provided
+  if (profilePicture !== undefined) {
+    const profilePictureResult = validateProfilePictureUrl(profilePicture);
+    if (!profilePictureResult.isValid && profilePictureResult.error) {
+      errors.push(profilePictureResult.error);
+    }
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+  };
+}

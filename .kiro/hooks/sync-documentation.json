@@ -1,0 +1,13 @@
+{
+  "name": "Sync Documentation After Task Completion",
+  "description": "Automatically reviews and updates all project documentation to ensure consistency when a task is marked complete",
+  "enabled": true,
+  "trigger": {
+    "type": "onFileSave",
+    "filePattern": ".kiro/specs/marketplace-platform/tasks.md"
+  },
+  "action": {
+    "type": "sendMessage",
+    "message": "The tasks.md file was just updated. Please perform a comprehensive documentation sync:\n\n1. **Count completed tasks** - Scan tasks.md for all [x] checkboxes and count them\n2. **Identify current task** - Find the first [ ] (incomplete) task\n3. **Identify current phase** - Determine which phase the current task belongs to\n4. **Calculate progress** - Compute percentage (completed/80 tasks)\n5. **Update all documentation files** with accurate information:\n\n   Files to check and update:\n   - README.md (Project Status section)\n   - PROGRESS.md (Status and progress counter)\n   - CURRENT-STATUS.md (Complete status overview)\n   - PROJECT-STATUS.md (if exists)\n\n6. **Verify consistency** across all files:\n   - Task count matches in all files\n   - Current task is correctly identified\n   - Current phase is correctly stated\n   - Completed tasks list is accurate\n   - Progress percentage is correct\n\n7. **List what was updated** - Provide a summary of changes made\n\nBe thorough and ensure all documentation reflects the true state of the project."
+  }
+}
