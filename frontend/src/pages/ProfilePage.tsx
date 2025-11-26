@@ -38,6 +38,7 @@ import { useAuth } from '../context/AuthContext';
 import { getUserProfile, getUserListings } from '../services/userService';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
+import { ListingCard } from '../components/ListingCard';
 import type { User, Listing } from '../types/api';
 import styles from './ProfilePage.module.css';
 
@@ -323,46 +324,11 @@ export const ProfilePage: React.FC = () => {
               // Grid of listing cards
               <div className={styles.listingsGrid}>
                 {listings.map((listing) => (
-                  <Card
+                  <ListingCard
                     key={listing.id}
-                    variant="outlined"
-                    hoverable
+                    listing={listing}
                     onClick={() => navigate(`/listings/${listing.id}`)}
-                    className={styles.listingCard}
-                  >
-                    {/* Listing Image */}
-                    {listing.images && listing.images.length > 0 && (
-                      <div className={styles.listingImage}>
-                        <img
-                          src={listing.images[0]}
-                          alt={listing.title}
-                        />
-                      </div>
-                    )}
-                    
-                    <Card.Body>
-                      {/* Listing Title */}
-                      <h3 className={styles.listingTitle}>{listing.title}</h3>
-                      
-                      {/* Listing Price */}
-                      <p className={styles.listingPrice}>
-                        ${listing.price.toFixed(2)}
-                        {listing.pricingType === 'hourly' && '/hr'}
-                      </p>
-                      
-                      {/* Listing Type Badge */}
-                      <span className={styles.listingTypeBadge}>
-                        {listing.listingType === 'item' ? '📦 Item' : '🛠️ Service'}
-                      </span>
-                      
-                      {/* Listing Status */}
-                      {listing.status !== 'active' && (
-                        <span className={styles.statusBadge}>
-                          {listing.status.toUpperCase()}
-                        </span>
-                      )}
-                    </Card.Body>
-                  </Card>
+                  />
                 ))}
               </div>
             )}

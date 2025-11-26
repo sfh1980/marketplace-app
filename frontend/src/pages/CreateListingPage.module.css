@@ -1,0 +1,374 @@
+/**
+ * Create Listing Page Styles
+ * 
+ * This CSS module styles the listing creation form.
+ * We use CSS Modules for component-scoped styles.
+ * 
+ * Key Patterns:
+ * - CSS Variables for consistent theming
+ * - Flexbox for layout
+ * - Grid for image previews
+ * - Responsive design with media queries
+ * - Accessible form styling
+ */
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+}
+
+.title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-xl) 0;
+}
+
+/**
+ * Error Message
+ * 
+ * Displayed at the top of the form when validation fails.
+ * Red background with white text for high visibility.
+ */
+.errorMessage {
+  background-color: var(--color-error);
+  color: white;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-size-sm);
+}
+
+/**
+ * Form Layout
+ * 
+ * Vertical stack of form sections with consistent spacing.
+ */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/**
+ * Form Section
+ * 
+ * Each form field is wrapped in a section for consistent spacing.
+ */
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/**
+ * Form Row
+ * 
+ * Horizontal layout for multiple fields side-by-side.
+ * On mobile, stacks vertically.
+ */
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+/* Stack form rows on mobile */
+@media (max-width: 640px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+/**
+ * Form Labels
+ * 
+ * Consistent styling for all form labels.
+ * Bold text with proper spacing.
+ */
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+/**
+ * Field Hints
+ * 
+ * Helper text below form fields.
+ * Smaller, lighter text for guidance.
+ */
+.fieldHint {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/**
+ * Radio Button Group
+ * 
+ * Horizontal layout for radio buttons.
+ * On mobile, stacks vertically for easier tapping.
+ */
+.radioGroup {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+}
+
+.radioInput {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.radioText {
+  user-select: none;
+}
+
+/**
+ * Textarea
+ * 
+ * Multi-line text input for description.
+ * Styled to match other form inputs.
+ */
+.textarea {
+  width: 100%;
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  resize: vertical;
+  min-height: 120px;
+  transition: border-color var(--transition-fast);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.textarea::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/**
+ * Select Dropdown
+ * 
+ * Styled select element for category and pricing type.
+ */
+.select {
+  width: 100%;
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/**
+ * File Input
+ * 
+ * Hidden file input (we use a styled button instead).
+ * Visually hidden but still accessible to screen readers.
+ */
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/**
+ * Image Preview Grid
+ * 
+ * Grid layout for image thumbnails.
+ * Responsive: 4 columns on desktop, 3 on tablet, 2 on mobile.
+ * 
+ * Why CSS Grid?
+ * - Automatic wrapping
+ * - Equal-sized items
+ * - Responsive without media queries (auto-fit)
+ */
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+/**
+ * Image Preview
+ * 
+ * Container for each image thumbnail.
+ * Relative positioning for the remove button.
+ */
+.imagePreview {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+}
+
+/**
+ * Preview Image
+ * 
+ * The actual image thumbnail.
+ * object-fit: cover ensures the image fills the container
+ * without distortion (crops if necessary).
+ */
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/**
+ * Remove Button
+ * 
+ * Button to remove an image from selection.
+ * Positioned in top-right corner of preview.
+ * 
+ * Design:
+ * - Circular button
+ * - Red background on hover
+ * - Large × symbol
+ * - Semi-transparent background
+ */
+.removeButton {
+  position: absolute;
+  top: var(--space-xs);
+  right: var(--space-xs);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  border: none;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast);
+}
+
+.removeButton:hover {
+  background-color: var(--color-error);
+}
+
+.removeButton:focus {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/**
+ * Read-Only Field
+ * 
+ * Display-only field that shows information but can't be edited.
+ * Used in edit page for fields that can't be changed (listing type, pricing type).
+ * 
+ * Styling:
+ * - Gray background to indicate it's not editable
+ * - Same padding as input fields for consistency
+ * - Slightly muted text color
+ */
+.readOnlyField {
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+}
+
+/**
+ * Form Actions
+ * 
+ * Container for submit and cancel buttons.
+ * Horizontal layout with gap between buttons.
+ * On mobile, stacks vertically with full-width buttons.
+ */
+.formActions {
+  display: flex;
+  gap: var(--space-md);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Stack buttons on mobile */
+@media (max-width: 640px) {
+  .formActions {
+    flex-direction: column;
+  }
+  
+  .formActions button {
+    width: 100%;
+  }
+}
+
+/**
+ * Responsive Adjustments
+ * 
+ * On smaller screens:
+ * - Reduce container padding
+ * - Smaller title
+ * - Smaller image grid
+ */
+@media (max-width: 640px) {
+  .container {
+    padding: var(--space-md);
+  }
+  
+  .title {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .imageGrid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}

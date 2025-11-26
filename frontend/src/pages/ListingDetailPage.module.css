@@ -1,0 +1,536 @@
+/**
+ * Listing Detail Page Styles
+ * 
+ * This CSS Module provides styles for the listing detail page.
+ * 
+ * Key Styling Patterns:
+ * - CSS Grid for two-column layout (main content + sidebar)
+ * - Flexbox for internal component layouts
+ * - CSS Variables for consistent spacing and colors
+ * - Responsive design with mobile-first approach
+ * - Image gallery with navigation controls
+ * 
+ * Educational Focus:
+ * - CSS Grid: Creating complex layouts
+ * - CSS Variables: Using our design system
+ * - Responsive Design: Mobile-first media queries
+ * - CSS Modules: Scoped styling to prevent conflicts
+ */
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.breadcrumb a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.breadcrumb a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.breadcrumbSeparator {
+  color: var(--color-text-secondary);
+}
+
+.breadcrumbCurrent {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Main Content Layout */
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+/* Desktop: Two-column layout */
+@media (min-width: 768px) {
+  .content {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* Main Column (left side on desktop) */
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Side Column (right side on desktop) */
+.sideColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Image Gallery */
+.imageGallery {
+  overflow: hidden;
+}
+
+.mainImageContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-surface);
+  overflow: hidden;
+}
+
+.mainImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: var(--color-surface);
+}
+
+/* Image Navigation Buttons */
+.imageNavButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  font-size: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast);
+  z-index: 10;
+}
+
+.imageNavButton:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.imageNavButton:active {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.imageNavButtonPrev {
+  left: var(--space-md);
+}
+
+.imageNavButtonNext {
+  right: var(--space-md);
+}
+
+/* Image Counter */
+.imageCounter {
+  position: absolute;
+  bottom: var(--space-md);
+  right: var(--space-md);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Thumbnail Strip */
+.thumbnailStrip {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  overflow-x: auto;
+  background-color: var(--color-surface);
+}
+
+.thumbnail {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+  background: none;
+  padding: 0;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail:hover {
+  border-color: var(--color-primary-light);
+}
+
+.thumbnailActive {
+  border-color: var(--color-primary);
+}
+
+/* Details Card */
+.detailsCard {
+  position: relative;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.statussold {
+  background-color: var(--color-error-light, #fee);
+  color: var(--color-error);
+}
+
+.statuscompleted {
+  background-color: var(--color-success-light, #efe);
+  color: var(--color-success);
+}
+
+/* Title */
+.title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-lg) 0;
+  line-height: var(--line-height-tight);
+}
+
+/* Price Section */
+.priceSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.price {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.listingType {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-md);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+/* Metadata */
+.metadata {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.metadataItem {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.metadataLabel {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  min-width: 100px;
+}
+
+.metadataValue {
+  color: var(--color-text-primary);
+}
+
+/* Description Section */
+.descriptionSection {
+  margin-top: var(--space-lg);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-md) 0;
+}
+
+.description {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-primary);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Seller Card */
+.sellerCard {
+  position: sticky;
+  top: var(--space-lg);
+}
+
+.sellerInfo {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.sellerAvatar {
+  flex-shrink: 0;
+}
+
+.avatarImage {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 2px solid var(--color-border);
+}
+
+.avatarPlaceholder {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.sellerDetails {
+  flex: 1;
+}
+
+.sellerName {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.sellerRating {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xs);
+}
+
+.stars {
+  font-size: var(--font-size-sm);
+  line-height: 1;
+}
+
+.ratingValue {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.memberSince {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.sellerLocation {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.viewProfileLink {
+  display: inline-block;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  transition: color var(--transition-fast);
+}
+
+.viewProfileLink:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/* Contact Card */
+.contactCard {
+  position: sticky;
+  top: calc(var(--space-lg) + 320px); /* Below seller card */
+}
+
+.contactDescription {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-lg) 0;
+  line-height: var(--line-height-normal);
+}
+
+.loginNote {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin: var(--space-md) 0 0 0;
+  font-style: italic;
+}
+
+/* Loading State */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: var(--space-lg);
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error Card */
+.errorCard {
+  max-width: 600px;
+  margin: var(--space-2xl) auto;
+  text-align: center;
+}
+
+.errorCard h2 {
+  color: var(--color-error);
+  margin-bottom: var(--space-md);
+}
+
+.errorCard p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+/* Responsive Design */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-md);
+  }
+  
+  .title {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .price {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .imageNavButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+  
+  .imageNavButtonPrev {
+    left: var(--space-sm);
+  }
+  
+  .imageNavButtonNext {
+    right: var(--space-sm);
+  }
+  
+  .sellerCard,
+  .contactCard {
+    position: static;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .container {
+    padding: var(--space-sm);
+  }
+  
+  .breadcrumb {
+    font-size: var(--font-size-xs);
+    gap: var(--space-xs);
+  }
+  
+  .title {
+    font-size: var(--font-size-xl);
+  }
+  
+  .price {
+    font-size: var(--font-size-xl);
+  }
+  
+  .priceSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+  
+  .metadata {
+    gap: var(--space-xs);
+  }
+  
+  .metadataItem {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .metadataLabel {
+    min-width: auto;
+    font-size: var(--font-size-xs);
+  }
+  
+  .sellerInfo {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .thumbnail {
+    width: 60px;
+    height: 60px;
+  }
+}

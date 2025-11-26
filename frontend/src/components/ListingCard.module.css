@@ -1,0 +1,371 @@
+/**
+ * ListingCard Component Styles
+ * 
+ * Scoped styles for the ListingCard component using CSS Modules.
+ * CSS Modules automatically scope class names to prevent conflicts.
+ * 
+ * Key Concepts:
+ * - CSS Modules: Scoped styles that won't leak to other components
+ * - CSS Variables: Using design tokens for consistency
+ * - Flexbox: For flexible layouts
+ * - Responsive Design: Mobile-first approach
+ * - Hover Effects: Visual feedback for interactivity
+ */
+
+/* ============================================
+   CARD CONTAINER
+   ============================================ */
+
+/**
+ * Main listing card container
+ * 
+ * The Card component handles most styling, but we add
+ * specific overrides for listing cards here
+ */
+.listingCard {
+  /* 
+    Cursor pointer indicates clickability
+    This is set on the Card component when onClick is provided
+  */
+  cursor: pointer;
+  
+  /* 
+    Smooth transition for hover effects
+    The Card component provides the hover transform
+  */
+  transition: all var(--transition-base);
+  
+  /*
+    Height 100% ensures cards in a grid have equal height
+    This is important for grid layouts
+  */
+  height: 100%;
+  
+  /*
+    Display flex with column direction
+    This ensures the card body stretches to fill available space
+  */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================
+   IMAGE SECTION
+   ============================================ */
+
+/**
+ * Image container
+ * 
+ * Fixed aspect ratio container for listing images.
+ * This prevents layout shift when images load and ensures
+ * all cards have consistent image heights.
+ * 
+ * Why fixed height?
+ * - Consistent grid layout
+ * - Prevents content jumping when images load
+ * - Professional, uniform appearance
+ */
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: var(--color-surface);
+  
+  /* 
+    Rounded corners only on top
+    Bottom corners are square to connect with card body
+  */
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/**
+ * Listing image
+ * 
+ * object-fit: cover ensures the image fills the container
+ * while maintaining its aspect ratio. This prevents distortion.
+ * 
+ * The image might be cropped, but it will never be stretched.
+ */
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  
+  /* 
+    Smooth transition for any image effects
+    Could be used for zoom on hover in the future
+  */
+  transition: transform var(--transition-base);
+}
+
+/**
+ * Optional: Zoom effect on hover
+ * 
+ * Uncomment this to add a subtle zoom effect when hovering
+ * This adds visual interest and indicates interactivity
+ */
+/*
+.listingCard:hover .image {
+  transform: scale(1.05);
+}
+*/
+
+/* ============================================
+   STATUS BADGE OVERLAY
+   ============================================ */
+
+/**
+ * Status badge overlay on image
+ * 
+ * Positioned absolutely in the top-right corner of the image.
+ * This makes the status immediately visible without taking up
+ * space in the card body.
+ * 
+ * Position: absolute requires parent to have position: relative
+ * (which imageContainer has)
+ */
+.statusBadgeOverlay {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  /* 
+    Semi-transparent background for readability
+    Works on any image background
+  */
+  background-color: rgba(0, 0, 0, 0.7);
+  color: var(--color-text-inverse);
+  
+  /* 
+    Subtle shadow for depth
+    Makes badge stand out from image
+  */
+  box-shadow: var(--shadow-sm);
+}
+
+/**
+ * Status badge variants
+ * 
+ * Different colors for different statuses
+ * This provides immediate visual feedback about listing state
+ */
+.statusBadgeSold {
+  background-color: var(--color-warning);
+  color: var(--color-text-inverse);
+}
+
+.statusBadgeCompleted {
+  background-color: var(--color-success);
+  color: var(--color-text-inverse);
+}
+
+/* ============================================
+   CARD CONTENT
+   ============================================ */
+
+/**
+ * Title
+ * 
+ * Listing title with truncation for long text.
+ * 
+ * Text truncation technique:
+ * 1. overflow: hidden - Hide overflowing text
+ * 2. text-overflow: ellipsis - Add "..." at the end
+ * 3. white-space: nowrap - Prevent wrapping to new line
+ * 
+ * This ensures titles don't break the card layout
+ */
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-sm) 0;
+  
+  /* Text truncation */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/**
+ * Price
+ * 
+ * Prominent price display in brand color.
+ * This is typically the most important information for buyers.
+ */
+.price {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin: 0 0 var(--space-md) 0;
+}
+
+/* ============================================
+   METADATA ROW
+   ============================================ */
+
+/**
+ * Metadata container
+ * 
+ * Flexbox layout for badges and location.
+ * Wraps on small screens if needed.
+ * 
+ * Flexbox benefits:
+ * - Automatic spacing with gap
+ * - Flexible wrapping
+ * - Easy alignment
+ */
+.metadata {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/**
+ * Type badge
+ * 
+ * Small badge indicating item or service.
+ * Uses subtle background color to not compete with price.
+ */
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  
+  /* 
+    Prevent badge from shrinking in flex layout
+    Ensures emoji and text stay together
+  */
+  flex-shrink: 0;
+}
+
+/**
+ * Location
+ * 
+ * Displays listing location with emoji icon.
+ * Secondary text color to not compete with title/price.
+ */
+.location {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  
+  /* 
+    Truncate long location names
+    Prevents breaking card layout
+  */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  
+  /* 
+    Allow location to shrink if needed
+    Type badge stays full size, location can truncate
+  */
+  flex-shrink: 1;
+  min-width: 0; /* Required for text truncation in flex items */
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+/**
+ * Tablet and below
+ * 
+ * Slightly smaller image height for better proportions
+ */
+@media (max-width: 768px) {
+  .imageContainer {
+    height: 180px;
+  }
+  
+  .title {
+    font-size: var(--font-size-base);
+  }
+  
+  .price {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/**
+ * Mobile
+ * 
+ * Further adjustments for small screens
+ */
+@media (max-width: 640px) {
+  .imageContainer {
+    height: 160px;
+  }
+  
+  .metadata {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .location {
+    /* Remove truncation on mobile since we stack vertically */
+    white-space: normal;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Focus state
+ * 
+ * The Card component handles focus outline, but we can
+ * add additional focus styles here if needed
+ */
+.listingCard:focus-visible {
+  /* Card component provides outline */
+}
+
+/**
+ * Reduced motion
+ * 
+ * Respect user's motion preferences
+ * Remove transitions for users who prefer reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+  .listingCard,
+  .image {
+    transition: none;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+/**
+ * Print optimization
+ * 
+ * Ensure cards print nicely
+ */
+@media print {
+  .listingCard {
+    page-break-inside: avoid;
+  }
+  
+  .statusBadgeOverlay {
+    background-color: var(--color-text-primary);
+  }
+}

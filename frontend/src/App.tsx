@@ -12,6 +12,10 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import ProfileEditPage from './pages/ProfileEditPage';
+import CreateListingPage from './pages/CreateListingPage';
+import ListingDetailPage from './pages/ListingDetailPage';
+import ListingEditPage from './pages/ListingEditPage';
+import MyListingsPage from './pages/MyListingsPage';
 import styles from './App.module.css';
 
 // Create a client for React Query
@@ -50,6 +54,9 @@ function App() {
                 {/* Profile Page - Public */}
                 <Route path="/profile/:userId" element={<ProfilePage />} />
                 
+                {/* Listing Detail Page - Public */}
+                <Route path="/listings/:listingId" element={<ListingDetailPage />} />
+                
                 {/* Protected Routes - Require Authentication */}
                 <Route 
                   path="/dashboard" 
@@ -64,6 +71,30 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <ProfileEditPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/listings/create" 
+                  element={
+                    <ProtectedRoute>
+                      <CreateListingPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/listings/:listingId/edit" 
+                  element={
+                    <ProtectedRoute>
+                      <ListingEditPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/my-listings" 
+                  element={
+                    <ProtectedRoute>
+                      <MyListingsPage />
                     </ProtectedRoute>
                   } 
                 />
