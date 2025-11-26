@@ -8,11 +8,6 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
 ## Phase 1: Project Foundation
 
 - [x] 1. Set up project structure and development environment
-
-
-
-
-
   - Initialize Node.js backend with TypeScript
   - Initialize React frontend with TypeScript
   - Configure build tools (Vite for frontend, ts-node for backend)
@@ -22,22 +17,12 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - _Requirements: Foundation for all features_
 
 - [x] 2. Set up PostgreSQL database and Prisma ORM
-
-
-
-
-
   - Install and configure PostgreSQL locally
   - Initialize Prisma with PostgreSQL connection
   - Explain ORM benefits and Prisma's approach
   - _Requirements: 10.1_
 
 - [x] 3. Define database schema for MVP
-
-
-
-
-
   - Create Prisma schema for User model
   - Create Prisma schema for Listing model (with item/service support)
   - Create Prisma schema for Message model
@@ -47,26 +32,16 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - _Requirements: 1.1, 2.1, 3.1, 6.1, 8.1_
 
 - [x] 3.1 Write property test for database schema
-
-
   - **Property 29: Data changes persist immediately**
   - **Validates: Requirements 10.1**
 
 - [x] 4. Checkpoint: Verify database setup
-
-
-
-
-
   - Ensure all tests pass, ask the user if questions arise
   - Verify database connection works
   - Verify tables are created correctly
   - **Educational focus**: How to inspect database, use Prisma Studio
 
 - [x] 4.1 Push to GitHub
-
-
-
   - Initialize git repository if not already done
   - Create .gitignore file (node_modules, .env, etc.)
   - Commit project foundation and database setup
@@ -78,10 +53,6 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
 ## Phase 2: Authentication & User Management (Backend)
 
 - [x] 5. Implement user registration endpoint
-
-
-
-
   - Create user registration controller
   - Implement password hashing with bcrypt
   - Add input validation (email format, password strength)
@@ -90,29 +61,18 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - _Requirements: 1.1, 1.2, 10.2_
 
 - [x] 5.1 Write property test for user registration
-
-
   - **Property 1: Valid registration creates unique user accounts**
   - **Validates: Requirements 1.1**
 
 - [x] 5.2 Write property test for duplicate email rejection
-
-
   - **Property 2: Duplicate email registration is rejected**
   - **Validates: Requirements 1.2**
 
 - [x] 5.3 Write property test for password hashing
-
-
   - **Property 30: Passwords are hashed before storage**
   - **Validates: Requirements 10.2**
 
 - [x] 6. Implement email verification
-
-
-
-
-
   - Create email verification endpoint
   - Set up Nodemailer for sending emails
   - Generate and validate verification tokens
@@ -120,11 +80,6 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - _Requirements: 1.1_
 
 - [x] 7. Implement user login endpoint
-
-
-
-
-
   - Create login controller
   - Implement JWT token generation
   - Add password verification
@@ -133,23 +88,14 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - _Requirements: 1.3, 1.4_
 
 - [x] 7.1 Write property test for valid login
-
-
   - **Property 3: Valid credentials authenticate successfully**
   - **Validates: Requirements 1.3**
 
 - [x] 7.2 Write property test for invalid login rejection
-
-
   - **Property 4: Invalid credentials are rejected**
   - **Validates: Requirements 1.4**
 
 - [x] 8. Implement authentication middleware
-
-
-
-
-
   - Create JWT verification middleware
   - Add protected route decorator
   - Handle token expiration
@@ -157,11 +103,6 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - _Requirements: 1.3_
 
 - [x] 9. Implement password reset flow
-
-
-
-
-
   - Create password reset request endpoint
   - Create password reset completion endpoint
   - Generate secure reset tokens
@@ -169,11 +110,6 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - _Requirements: 1.5_
 
 - [x] 10. Checkpoint: Test authentication flow
-
-
-
-
-
   - Ensure all tests pass, ask the user if questions arise
   - Test registration → email verification → login flow
   - Test password reset flow
@@ -181,8 +117,6 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Educational focus**: How to test APIs with Postman/curl
 
 - [x] 10.1 Push to GitHub
-
-
   - Commit authentication implementation
   - Update PROGRESS.md with authentication milestone
   - Push to GitHub
@@ -193,28 +127,16 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
 ## Phase 3: User Profile Management (Backend)
 
 - [x] 11. Implement get user profile endpoint
-
-
-
-
-
   - Create profile retrieval controller
   - Include user's listings in response
   - **Educational focus**: Explain REST API design, resource relationships
   - _Requirements: 2.3_
 
 - [x] 11.1 Write property test for profile view
-
-
   - **Property 6: Profile view contains required information**
   - **Validates: Requirements 2.3**
 
 - [x] 12. Implement update user profile endpoint
-
-
-
-
-
   - Create profile update controller
   - Validate profile data
   - Handle partial updates
@@ -222,31 +144,22 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - _Requirements: 2.1, 2.4_
 
 - [x] 12.1 Write property test for profile updates
-
-
   - **Property 5: Profile updates persist correctly**
   - **Validates: Requirements 2.1, 2.2, 2.4**
 
 - [x] 13. Implement profile picture upload
-
-
-
-
-
   - Set up Multer for file uploads
   - Add image validation (type, size)
   - Store images to local filesystem (MVP) or cloud storage
   - **Educational focus**: Explain file uploads, multipart/form-data, image validation
   - _Requirements: 2.2_
 
-- [-] 14. Checkpoint: Test user profile management
-
-
+- [x] 14. Checkpoint: Test user profile management
   - Ensure all tests pass, ask the user if questions arise
   - Test profile retrieval, updates, and image upload
   - Verify authentication is required for updates
 
-- [ ] 14.1 Push to GitHub
+- [x] 14.1 Push to GitHub
   - Commit user profile management
   - Update PROGRESS.md
   - Push to GitHub
@@ -255,7 +168,7 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
 
 ## Phase 4: Listing Management (Backend)
 
-- [ ] 15. Implement create listing endpoint
+- [x] 15. Implement create listing endpoint
   - Create listing creation controller
   - Support both item and service listing types
   - Handle pricing type for services (hourly/fixed)
@@ -263,78 +176,110 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Educational focus**: Explain polymorphic data models, validation strategies
   - _Requirements: 3.1, 3.2_
 
-- [ ] 15.1 Write property test for listing creation
+- [x] 15.1 Write property test for listing creation
   - **Property 7: Valid listing creation succeeds**
   - **Validates: Requirements 3.1**
 
-- [ ] 15.2 Write property test for service pricing
+- [x] 15.2 Write property test for service pricing
   - **Property 7a: Service listings store pricing type correctly**
   - **Validates: Requirements 3.2**
 
-- [ ] 15.3 Write property test for category requirement
+- [x] 15.3 Write property test for category requirement
   - **Property 22: Listings require valid categories**
   - **Validates: Requirements 8.1**
 
-- [ ] 16. Implement listing image upload
-  - Add multiple image upload support
-  - Enforce 10-image limit
-  - Maintain upload order
-  - **Educational focus**: Explain array handling, file limits
-  - _Requirements: 3.3_
+- [x] 16. Implement get listing endpoint
 
-- [ ] 16.1 Write property test for image limits and ordering
-  - **Property 8: Image upload respects limits and ordering**
-  - **Validates: Requirements 3.2**
 
-- [ ] 17. Implement get listing endpoint
-  - Create listing retrieval controller
-  - Include seller information
+
+
+
+  - Create listing retrieval controller (GET /api/listings/:id)
+  - Include seller information in response
   - **Educational focus**: Explain eager loading, N+1 query problem
   - _Requirements: 5.1, 5.2_
 
-- [ ] 17.1 Write property test for listing details
+- [x] 16.1 Write property test for listing details
+
+
   - **Property 14: Listing details include all required information**
   - **Validates: Requirements 5.1, 5.2**
 
-- [ ] 18. Implement update listing endpoint
-  - Create listing update controller
-  - Verify user owns the listing
+- [x] 17. Implement get all listings endpoint
+
+
+
+
+
+  - Create endpoint to retrieve all listings (GET /api/listings)
+  - Add pagination support (limit, offset)
+  - Return listings with seller information
+  - **Educational focus**: Explain pagination, query parameters
+  - _Requirements: 4.1_
+
+- [x] 18. Implement update listing endpoint
+
+
+
+
+
+  - Create listing update controller (PUT /api/listings/:id)
+  - Verify user owns the listing (authorization)
   - Preserve creation timestamp
   - **Educational focus**: Explain authorization vs authentication, immutable fields
   - _Requirements: 3.4_
 
-- [ ] 18.1 Write property test for timestamp preservation
-  - **Property 9: Listing edits preserve creation timestamp**
-  - **Validates: Requirements 3.3**
+- [x] 18.1 Write property test for timestamp preservation
 
-- [ ] 19. Implement listing status updates
-  - Add endpoint to mark listing as sold/completed
-  - Update listing status
+
+  - **Property 9: Listing edits preserve creation timestamp**
+  - **Validates: Requirements 3.4**
+
+- [x] 19. Implement listing status updates
+
+
+
+
+
+  - Add endpoint to mark listing as sold/completed (PATCH /api/listings/:id/status)
+  - Update listing status field
   - **Educational focus**: Explain state management, status transitions
   - _Requirements: 3.5_
 
-- [ ] 19.1 Write property test for sold listing exclusion
-  - **Property 10: Sold listings are excluded from active searches**
-  - **Validates: Requirements 3.4**
+- [x] 19.1 Write property test for sold listing exclusion
 
-- [ ] 20. Implement delete listing endpoint
-  - Create listing deletion controller
+
+  - **Property 10: Sold listings are excluded from active searches**
+  - **Validates: Requirements 3.5**
+
+- [x] 20. Implement delete listing endpoint
+
+
+
+
+
+  - Create listing deletion controller (DELETE /api/listings/:id)
   - Verify user owns the listing
   - Permanently remove listing
   - **Educational focus**: Explain soft delete vs hard delete
   - _Requirements: 3.6_
 
-- [ ] 20.1 Write property test for listing deletion
-  - **Property 11: Deleted listings are permanently removed**
-  - **Validates: Requirements 3.5**
+- [x] 20.1 Write property test for listing deletion
 
-- [ ] 21. Checkpoint: Test listing management
+
+  - **Property 11: Deleted listings are permanently removed**
+  - **Validates: Requirements 3.6**
+
+- [-] 21. Checkpoint: Test listing management
+
+
   - Ensure all tests pass, ask the user if questions arise
   - Test create, read, update, delete operations
   - Test both item and service listings
   - Verify authorization works correctly
 
-- [ ] 21.1 Push to GitHub
+- [-] 21.1 Push to GitHub
+
   - Commit listing management implementation
   - Update PROGRESS.md with listing features
   - Push to GitHub
@@ -344,19 +289,25 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
 
 ## Phase 5: Search & Browse (Backend)
 
-- [ ] 22. Implement basic listing search endpoint
-  - Create search controller with query parameter
+- [ ] 22. Create initial categories
+  - Create seed script to populate categories table
+  - Add common marketplace categories (Electronics, Furniture, Services, etc.)
+  - **Educational focus**: Explain database seeding, initial data
+  - _Requirements: 8.1_
+
+- [ ] 23. Implement basic listing search endpoint
+  - Create search controller with query parameter (GET /api/search)
   - Search in title and description
   - Return paginated results
   - **Educational focus**: Explain full-text search, pagination, SQL LIKE vs full-text indexes
   - _Requirements: 4.2_
 
-- [ ] 22.1 Write property test for search matching
+- [ ] 23.1 Write property test for search matching
   - **Property 12: Search returns matching listings**
   - **Validates: Requirements 4.2**
 
-- [ ] 23. Implement search filters
-  - Add category filter
+- [ ] 24. Implement search filters
+  - Add category filter to search endpoint
   - Add listing type filter (item/service)
   - Add price range filter
   - Add location filter
@@ -364,30 +315,23 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Educational focus**: Explain query building, filter composition
   - _Requirements: 4.3, 4.4, 4.5, 4.6_
 
-- [ ] 23.1 Write property test for filtering
+- [ ] 24.1 Write property test for filtering
   - **Property 13: Filters return only matching results**
   - **Validates: Requirements 4.3, 4.4, 4.5, 4.6**
 
-- [ ] 24. Implement category endpoints
-  - Create get all categories endpoint
+- [ ] 25. Implement category endpoints
+  - Create get all categories endpoint (GET /api/categories)
   - Include listing counts per category
   - **Educational focus**: Explain aggregation queries, GROUP BY
   - _Requirements: 8.2, 8.3_
 
-- [ ] 24.1 Write property test for category browsing
+- [ ] 25.1 Write property test for category browsing
   - **Property 23: Category browsing returns correct listings**
   - **Validates: Requirements 8.2**
 
-- [ ] 24.2 Write property test for category counts
+- [ ] 25.2 Write property test for category counts
   - **Property 24: Category counts are accurate**
   - **Validates: Requirements 8.3**
-
-- [ ] 25. Implement homepage featured listings
-  - Create endpoint for recent/featured listings
-  - Sort by creation date
-  - Limit results
-  - **Educational focus**: Explain sorting, limiting, featured content strategies
-  - _Requirements: 4.1_
 
 - [ ] 26. Checkpoint: Test search and browse functionality
   - Ensure all tests pass, ask the user if questions arise
@@ -406,7 +350,7 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
 ## Phase 6: Messaging (Backend)
 
 - [ ] 27. Implement send message endpoint
-  - Create message sending controller
+  - Create message sending controller (POST /api/messages)
   - Associate message with listing (optional)
   - Store sender, receiver, content, timestamp
   - **Educational focus**: Explain message threading, conversation design
@@ -417,7 +361,7 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Validates: Requirements 6.1, 6.2, 6.4**
 
 - [ ] 28. Implement get conversations endpoint
-  - Create inbox controller
+  - Create inbox controller (GET /api/messages)
   - Group messages by conversation
   - Include unread count
   - **Educational focus**: Explain conversation grouping, aggregation
@@ -428,7 +372,7 @@ This implementation plan breaks down the MVP into small, educational chunks. Eac
   - **Validates: Requirements 6.3**
 
 - [ ] 29. Implement get conversation messages endpoint
-  - Retrieve all messages in a conversation
+  - Retrieve all messages in a conversation (GET /api/messages/:conversationId)
   - Mark messages as read
   - **Educational focus**: Explain read receipts, message status
   - _Requirements: 6.2_

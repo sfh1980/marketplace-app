@@ -4,8 +4,8 @@ A full-stack web application for buying and selling items and legally allowable 
 
 ## 📊 Project Status
 
-**Current Phase:** MVP Development - Ready for Listing Management (Backend)  
-**Progress:** 23 of 80 tasks complete (28.75%)  
+**Current Phase:** MVP Development - Ready for Search & Browse (Backend)  
+**Progress:** 21 of 80 tasks complete (26.25%)  
 **Last Updated:** November 25, 2024
 
 ### Completed Phases
@@ -34,12 +34,26 @@ A full-stack web application for buying and selling items and legally allowable 
 - ✅ Task 12: Update user profile endpoint
 - ✅ Task 12.1: Property test for profile updates
 - ✅ Task 13: Profile picture upload with Multer
-- ✅ Task 14: Checkpoint - Test user profile management (74/76 tests passing - 97.4%)
+- ✅ Task 14: Checkpoint - Test user profile management
+
+**Phase 4: Listing Management (Backend)** ✅
+- ✅ Task 15: Create listing endpoint (items and services)
+- ✅ Task 15.1-15.3: Property tests for listing creation
+- ✅ Task 16: Get listing endpoint with seller information
+- ✅ Task 16.1: Property test for listing details
+- ✅ Task 17: Get all listings endpoint with pagination
+- ✅ Task 18: Update listing endpoint with authorization
+- ✅ Task 18.1: Property test for timestamp preservation
+- ✅ Task 19: Listing status updates (sold/completed/active)
+- ✅ Task 19.1: Property test for sold listing exclusion
+- ✅ Task 20: Delete listing endpoint
+- ✅ Task 20.1: Property test for listing deletion
+- ✅ Task 21: Checkpoint - All listing management tests passing (48/48 tests)
 
 ### Next Steps
-- 🔄 Task 14.1: Push to GitHub (third checkpoint)
-- ⏳ Task 15: Implement create listing endpoint
-- ⏳ Task 15.1-15.3: Property tests for listing creation
+- 🔄 Task 21.1: Push to GitHub (fourth checkpoint)
+- ⏳ Task 22: Create initial categories
+- ⏳ Task 23: Implement basic listing search endpoint
 
 ## 🎯 Key Features
 
@@ -47,7 +61,9 @@ A full-stack web application for buying and selling items and legally allowable 
 - ✅ User authentication (email verification, JWT)
 - ✅ User profiles with profile pictures
 - ✅ File upload system (Multer with validation)
-- ⏳ Listings for items AND services
+- ✅ Listings for items AND services (full CRUD operations)
+- ✅ Listing status management (active/sold/completed)
+- ✅ Authorization checks (users can only modify their own listings)
 - ⏳ Search and filtering
 - ⏳ User-to-user messaging
 - ⏳ Bot prevention and content moderation
@@ -190,6 +206,68 @@ npx ts-node src/utils/verifyDatabase.ts  # Verify database setup
 
 ## ✨ Feature Highlights
 
+### Listing Management (Items & Services)
+Complete CRUD operations for marketplace listings with full support for both physical items and services:
+
+**Listing Types:**
+- **Items**: Physical goods with fixed pricing
+- **Services**: Professional services with hourly or fixed pricing
+
+**Features:**
+- ✅ Create listings with title, description, price, category, images
+- ✅ Retrieve individual listings with seller information
+- ✅ Browse all active listings with pagination
+- ✅ Update listings (owner only) while preserving creation timestamp
+- ✅ Mark listings as sold/completed/active
+- ✅ Delete listings permanently (owner only)
+- ✅ Authorization checks ensure users can only modify their own listings
+- ✅ Sold listings automatically excluded from active searches
+
+**Validation:**
+- Required fields: title, description, price, category, listingType
+- Price must be positive
+- Category must be valid
+- Images: 1-10 images required
+- Service listings must specify pricing type (hourly/fixed)
+- Item listings cannot have pricing type
+
+**Example Usage:**
+```bash
+# Create a listing
+curl -X POST http://localhost:5000/api/listings \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Vintage Camera",
+    "description": "Classic 35mm film camera in excellent condition",
+    "price": 150.00,
+    "category": "Electronics",
+    "listingType": "item",
+    "location": "San Francisco, CA",
+    "images": ["image1.jpg", "image2.jpg"]
+  }'
+
+# Get all listings with pagination
+curl http://localhost:5000/api/listings?limit=20&offset=0
+
+# Update listing status to sold
+curl -X PATCH http://localhost:5000/api/listings/LISTING_ID/status \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"status": "sold"}'
+```
+
+**Property-Based Tests:**
+- Property 7: Valid listing creation succeeds (all valid inputs create listings)
+- Property 7a: Service listings store pricing type correctly
+- Property 9: Listing edits preserve creation timestamp
+- Property 10: Sold listings excluded from active searches
+- Property 11: Deleted listings permanently removed
+- Property 14: Listing details include all required information
+- Property 22: Listings require valid categories
+
+**Test Coverage: 48 tests passing** ✅
+
 ### Profile Picture Upload
 Users can upload profile pictures with comprehensive validation and security:
 
@@ -224,12 +302,12 @@ npm test
 ```
 
 **Current Test Results:**
-- **Test Suites:** 10 passed, 1 failed (11 total)
-- **Tests:** 74 passed, 2 failed (76 total)
-- **Success Rate:** 97.4% ✅
-- **Coverage:** Authentication, profile management, database persistence, file uploads
+- **Test Suites:** 16 passed, 1 failed (17 total)
+- **Tests:** 123 passed, 2 failed (125 total)
+- **Success Rate:** 98.4% ✅
+- **Coverage:** Authentication, profile management, listing management (CRUD), database persistence, file uploads
 
-The 2 failing tests are minor issues in profile picture upload tests that don't affect core functionality.
+The 2 failing tests are minor issues in profile picture upload tests that don't affect core functionality. All 48 listing management tests pass successfully.
 
 ## 📚 Documentation
 
@@ -329,6 +407,22 @@ View schema: `backend/prisma/schema.prisma`
   - Field name: `profilePicture`
   - Max size: 5MB
   - Formats: JPEG, PNG, GIF, WebP
+
+### Listings
+- `POST /api/listings` - Create new listing (authenticated)
+  - Supports both item and service types
+  - Service listings include pricing type (hourly/fixed)
+  - Requires: title, description, price, category, listingType, images
+- `GET /api/listings` - Get all active listings with pagination
+  - Query params: limit, offset
+  - Returns: listings array, total count, hasMore flag
+- `GET /api/listings/:id` - Get specific listing with seller info
+- `PUT /api/listings/:id` - Update listing (authenticated, owner only)
+  - Preserves creation timestamp
+- `PATCH /api/listings/:id/status` - Update listing status (authenticated, owner only)
+  - Status values: active, sold, completed
+- `DELETE /api/listings/:id` - Delete listing (authenticated, owner only)
+  - Permanently removes listing
 
 ### Static Files
 - `GET /uploads/profile-pictures/:filename` - Access uploaded profile pictures

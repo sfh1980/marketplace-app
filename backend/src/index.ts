@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
+import listingRoutes from './routes/listingRoutes';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -79,6 +80,10 @@ app.use('/api/auth', authRoutes);
 // User routes - mounted at /api/users
 // These routes demonstrate protected endpoints using authentication middleware
 app.use('/api/users', userRoutes);
+
+// Listing routes - mounted at /api/listings
+// These routes handle creating, viewing, and managing listings
+app.use('/api/listings', listingRoutes);
 
 // 404 handler for undefined routes
 app.use((_req: Request, res: Response) => {
