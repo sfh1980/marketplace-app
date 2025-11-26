@@ -10,6 +10,8 @@ import VerifyEmailPage from './pages/VerifyEmailPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import DashboardPage from './pages/DashboardPage';
+import ProfilePage from './pages/ProfilePage';
+import ProfileEditPage from './pages/ProfileEditPage';
 import styles from './App.module.css';
 
 // Create a client for React Query
@@ -45,12 +47,23 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
                 
+                {/* Profile Page - Public */}
+                <Route path="/profile/:userId" element={<ProfilePage />} />
+                
                 {/* Protected Routes - Require Authentication */}
                 <Route 
                   path="/dashboard" 
                   element={
                     <ProtectedRoute>
                       <DashboardPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/profile/:userId/edit" 
+                  element={
+                    <ProtectedRoute>
+                      <ProfileEditPage />
                     </ProtectedRoute>
                   } 
                 />

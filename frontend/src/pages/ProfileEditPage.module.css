@@ -1,0 +1,211 @@
+/**
+ * Profile Edit Page Styles
+ * 
+ * This CSS module provides styles for the profile edit page.
+ * 
+ * Key Concepts:
+ * - CSS Modules: Scoped styles that won't conflict with other components
+ * - CSS Variables: Consistent spacing, colors, and typography
+ * - Responsive Design: Works on mobile and desktop
+ * - Accessibility: Clear focus states and labels
+ */
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-xl) 0;
+}
+
+/**
+ * Form Styles
+ */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.fieldHint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/**
+ * Image Upload Section
+ * 
+ * This section displays the image preview and upload controls.
+ * Layout: Image on left, controls on right (desktop)
+ *         Stacked vertically on mobile
+ */
+.imageUploadSection {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-start;
+}
+
+/**
+ * Image Preview
+ * 
+ * Shows the current or selected profile picture.
+ * Circular container with fixed size.
+ */
+.imagePreview {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/**
+ * Preview Placeholder
+ * 
+ * Shown when no image is selected.
+ * Displays first letter of username.
+ */
+.previewPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  background-color: var(--color-surface);
+}
+
+/**
+ * Image Controls
+ * 
+ * Buttons and hints for image upload.
+ */
+.imageControls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  flex: 1;
+}
+
+/**
+ * Hidden File Input
+ * 
+ * We hide the default file input because it's hard to style.
+ * Instead, we use a styled button that triggers this input.
+ * 
+ * Why position: absolute?
+ * - Removes it from document flow
+ * - Makes it invisible but still functional
+ * - Screen readers can still access it
+ */
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.imageHint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/**
+ * Form Actions
+ * 
+ * Save and Cancel buttons at the bottom of the form.
+ */
+.formActions {
+  display: flex;
+  gap: var(--space-md);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+/**
+ * Message Styles
+ * 
+ * Success and error messages displayed at the top of the form.
+ */
+.successMessage {
+  padding: var(--space-md);
+  background-color: #d1fae5; /* Light green */
+  border: 1px solid #10b981; /* Green */
+  border-radius: var(--radius-md);
+  color: #065f46; /* Dark green */
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.errorMessage {
+  padding: var(--space-md);
+  background-color: #fee2e2; /* Light red */
+  border: 1px solid #ef4444; /* Red */
+  border-radius: var(--radius-md);
+  color: #991b1b; /* Dark red */
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-lg);
+}
+
+/**
+ * Responsive Design
+ * 
+ * On mobile devices, stack the image preview and controls vertically.
+ */
+@media (max-width: 640px) {
+  .container {
+    padding: var(--space-md);
+  }
+  
+  .imageUploadSection {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .imageControls {
+    width: 100%;
+  }
+  
+  .formActions {
+    flex-direction: column;
+  }
+  
+  .formActions button {
+    width: 100%;
+  }
+}
