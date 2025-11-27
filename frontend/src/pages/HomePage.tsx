@@ -73,8 +73,17 @@ const HomePage: React.FC = () => {
   const { 
     data: listingsData, 
     isLoading: listingsLoading, 
-    isError: listingsError 
+    isError: listingsError,
+    error: listingsErrorDetails
   } = useListings(1, 12);
+  
+  // Debug logging (remove in production)
+  if (listingsData) {
+    console.log('Listings data:', listingsData);
+  }
+  if (listingsError) {
+    console.error('Listings error:', listingsErrorDetails);
+  }
   
   /**
    * Fetch all categories
@@ -85,8 +94,17 @@ const HomePage: React.FC = () => {
   const { 
     data: categories, 
     isLoading: categoriesLoading, 
-    isError: categoriesError 
+    isError: categoriesError,
+    error: categoriesErrorDetails
   } = useCategories();
+  
+  // Debug logging (remove in production)
+  if (categories) {
+    console.log('Categories data:', categories);
+  }
+  if (categoriesError) {
+    console.error('Categories error:', categoriesErrorDetails);
+  }
   
   /**
    * Handle search form submission
@@ -221,7 +239,7 @@ const HomePage: React.FC = () => {
           )}
           
           {/* Success State - Show Categories */}
-          {categories && categories.length > 0 && (
+          {categories && Array.isArray(categories) && categories.length > 0 && (
             <div className={styles.categoriesGrid}>
               {categories.map((category) => (
                 <button
@@ -292,7 +310,7 @@ const HomePage: React.FC = () => {
           )}
           
           {/* Success State - Show Listings */}
-          {listingsData && listingsData.data.length > 0 && (
+          {listingsData && listingsData.data && listingsData.data.length > 0 && (
             <div className={styles.listingsGrid}>
               {listingsData.data.map((listing) => (
                 <ListingCard
@@ -305,7 +323,7 @@ const HomePage: React.FC = () => {
           )}
           
           {/* Empty State */}
-          {listingsData && listingsData.data.length === 0 && (
+          {listingsData && listingsData.data && listingsData.data.length === 0 && (
             <div className={styles.emptyState}>
               <p>No listings yet. Be the first to post!</p>
               <button 

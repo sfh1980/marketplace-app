@@ -13,12 +13,18 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 /**
  * Base API URL
- * In development: http://localhost:3000
+ * In development: Use relative URLs (empty string) to leverage Vite proxy
+ * The Vite proxy (configured in vite.config.ts) forwards /api requests to http://localhost:5000
  * In production: This would be your deployed backend URL
  * 
  * Using environment variables allows different URLs for dev/staging/prod
+ * 
+ * Why empty string in development?
+ * - Vite dev server proxies /api/* to backend (localhost:5000)
+ * - This avoids CORS issues during development
+ * - Requests go to same origin, then proxy forwards them
  */
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 /**
  * Create the Axios instance with default configuration

@@ -61,8 +61,8 @@ export const searchListings = async (
  * ```
  */
 export const getCategories = async (): Promise<Category[]> => {
-  const response = await apiClient.get<Category[]>('/categories');
-  return response.data;
+  const response = await apiClient.get<{ categories: Category[] }>('/categories');
+  return response.data.categories;
 };
 
 /**
