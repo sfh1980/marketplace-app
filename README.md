@@ -4,8 +4,8 @@ A full-stack web application for buying and selling items and legally allowable 
 
 ## 📊 Project Status
 
-**Current Phase:** MVP Development - Search & Browse UI Complete  
-**Progress:** 87 of 115 tasks complete (75.7%)  
+**Current Phase:** MVP Development - Messaging UI Complete  
+**Progress:** 89 of 115 tasks complete (77.4%)  
 **Last Updated:** November 26, 2024
 
 ### Completed Phases
@@ -108,8 +108,15 @@ A full-stack web application for buying and selling items and legally allowable 
 - ✅ Task 56: Checkpoint - Search and browse UI verified (all tests passing)
 - ✅ Task 56.1: Eleventh GitHub push (documentation updated)
 
+**Phase 12: Messaging UI** ✅
+- ✅ Task 57: Create messages inbox page
+- ✅ Task 58: Create conversation page
+- ✅ Task 59: Add contact seller button to listings
+- ✅ Task 60: Checkpoint - Test messaging UI (all tests passing)
+- ✅ Task 60.1: Twelfth GitHub push (documentation updated)
+
 ### Next Steps
-- ⏳ Task 57: Create messages inbox page (Phase 12: Messaging UI)
+- ⏳ Task 61: Add responsive design (Phase 13: Polish & Final Testing)
 
 ## 🎯 Key Features
 

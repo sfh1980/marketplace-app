@@ -31,10 +31,11 @@ jest.mock('../../lib/axios');
 // Mock the listing service
 jest.mock('../../services/listingService');
 
-// Mock useAuth hook
+// Mock useAuth hook from AuthContext
 const mockUseAuth = jest.fn();
-jest.mock('../../hooks/useAuth', () => ({
+jest.mock('../../context/AuthContext', () => ({
   useAuth: () => mockUseAuth(),
+  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 // Mock useNavigate from react-router-dom

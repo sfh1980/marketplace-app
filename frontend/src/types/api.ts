@@ -150,12 +150,28 @@ export interface SendMessageRequest {
   content: string;
 }
 
+/**
+ * Conversation Type
+ * 
+ * Represents a conversation in the user's inbox.
+ * The backend groups messages by the other user and returns:
+ * - Information about the other user
+ * - The last message in the conversation
+ * - Count of unread messages
+ * - Associated listing (if any)
+ */
 export interface Conversation {
-  userId: string;
-  user: User;
+  userId: string; // ID of the other user (otherUserId from backend)
+  user: User; // Other user's information
   listingId: string | null;
   listing?: Listing;
-  lastMessage: Message;
+  lastMessage: {
+    id: string;
+    content: string;
+    createdAt: string;
+    senderId: string;
+    read: boolean;
+  };
   unreadCount: number;
 }
 

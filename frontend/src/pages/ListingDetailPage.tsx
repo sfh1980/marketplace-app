@@ -68,20 +68,63 @@ const ListingDetailPage: React.FC = () => {
   /**
    * Handle Contact Seller Button Click
    * 
-   * This will navigate to the messaging page with the seller and listing pre-selected
-   * In a future task, we'll implement the actual messaging functionality
+   * This function implements the user flow for contacting a seller about a listing.
+   * 
+   * User Flow:
+   * 1. User clicks "Contact Seller" button on listing detail page
+   * 2. System checks if user is logged in
+   *    - If not logged in → redirect to login page (with return URL)
+   *    - After login, user returns to this listing
+   * 3. System checks if user is trying to contact themselves
+   *    - Sellers can't message themselves about their own listings
+   * 4. Navigate to conversation page with the seller
+   *    - URL: /messages/:sellerId
+   *    - The conversation page will handle sending the first message
+   *    - The listing context is maintained through the URL state
+   * 
+   * Why This Design?
+   * - Separates concerns: This page handles navigation, conversation page handles messaging
+   * - Maintains context: Listing ID is passed so first message can reference it
+   * - Good UX: Clear error messages, proper authentication flow
+   * - Prevents errors: Can't message yourself, must be logged in
+   * 
+   * Educational Note:
+   * This is a common pattern in web apps - one page initiates an action,
+   * another page completes it. The navigation state carries context between them.
    */
   const handleContactSeller = () => {
+    // Authentication Check
+    // If user isn't logged in, redirect to login page
+    // The 'state' object preserves where they came from so we can redirect back
     if (!user) {
-      // If not logged in, redirect to login page
-      // After login, they'll be redirected back here
-      navigate('/login', { state: { from: `/listings/${listingId}` } });
+      navigate('/login', { 
+        state: { from: `/listings/${listingId}` } 
+      });
       return;
     }
     
-    // Navigate to messaging page (to be implemented in Phase 12)
-    // For now, we'll show an alert
-    alert('Messaging feature coming soon! This will open a conversation with the seller.');
+    // Self-Contact Prevention
+    // Users shouldn't be able to message themselves
+    // This would be confusing and serves no purpose
+    if (listing?.seller && user.id === listing.seller.id) {
+      alert('You cannot contact yourself about your own listing.');
+      return;
+    }
+    
+    // Navigate to Conversation
+    // Open the conversation page with this seller
+    // The conversation page will handle:
+    // - Loading existing messages (if any)
+    // - Sending new messages
+    // - Associating messages with this listing
+    if (listing?.seller) {
+      navigate(`/messages/${listing.seller.id}`, {
+        state: { 
+          listingId: listing.id,
+          listingTitle: listing.title 
+        }
+      });
+    }
   };
 
   /**

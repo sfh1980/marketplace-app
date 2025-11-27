@@ -19,6 +19,8 @@ import ListingDetailPage from './pages/ListingDetailPage';
 import ListingEditPage from './pages/ListingEditPage';
 import MyListingsPage from './pages/MyListingsPage';
 import CategoryBrowsePage from './pages/CategoryBrowsePage';
+import MessagesInboxPage from './pages/MessagesInboxPage';
+import ConversationPage from './pages/ConversationPage';
 import styles from './App.module.css';
 
 // Create a client for React Query
@@ -97,6 +99,22 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <MyListingsPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/messages" 
+                  element={
+                    <ProtectedRoute>
+                      <MessagesInboxPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/messages/:otherUserId" 
+                  element={
+                    <ProtectedRoute>
+                      <ConversationPage />
                     </ProtectedRoute>
                   } 
                 />
