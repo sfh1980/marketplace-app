@@ -228,7 +228,8 @@ describe('ListingCard', () => {
     
     render(<ListingCard listing={listing} />);
     
-    const image = screen.getByAltText('Test Listing');
+    // Updated to match new alt text format that includes listing type
+    const image = screen.getByAltText('Test Listing - item');
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute('src', 'https://example.com/image.jpg');
   });

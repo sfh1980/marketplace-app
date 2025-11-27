@@ -1,0 +1,192 @@
+/**
+ * ErrorBoundary Styles
+ * 
+ * Styles for the error boundary fallback UI.
+ * Uses CSS variables for consistency with the design system.
+ * 
+ * Design Goals:
+ * - Clear, non-threatening error message
+ * - Prominent recovery actions
+ * - Professional appearance
+ * - Responsive layout
+ */
+
+/* Main container - centers content and fills viewport */
+.errorBoundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  background-color: var(--color-surface);
+}
+
+/* Content wrapper - constrains width and adds styling */
+.errorContent {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Error icon - visual indicator of error state */
+.errorIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-xl);
+  border-radius: var(--radius-full);
+  background-color: var(--color-error-light);
+  color: var(--color-error);
+}
+
+.errorIcon svg {
+  width: 48px;
+  height: 48px;
+}
+
+/* Error title - main heading */
+.errorTitle {
+  margin: 0 0 var(--space-md);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
+}
+
+/* Error message - explanation text */
+.errorMessage {
+  margin: 0 0 var(--space-xl);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Error details - collapsible section for development */
+.errorDetails {
+  margin: var(--space-xl) 0;
+  text-align: left;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.errorDetailsSummary {
+  padding: var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--transition-fast);
+}
+
+.errorDetailsSummary:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.errorDetailsContent {
+  padding: var(--space-md);
+  margin: 0;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  background-color: var(--color-background);
+  border-top: 1px solid var(--color-border);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.errorDetailsContent code {
+  font-family: inherit;
+}
+
+/* Action buttons - recovery options */
+.errorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  justify-content: center;
+  margin-bottom: var(--space-xl);
+}
+
+/* Help text - additional guidance */
+.errorHelp {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  line-height: var(--line-height-normal);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Mobile devices - adjust spacing and font sizes */
+@media (max-width: 640px) {
+  .errorBoundary {
+    padding: var(--space-md);
+  }
+
+  .errorContent {
+    padding: var(--space-xl);
+  }
+
+  .errorIcon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--space-lg);
+  }
+
+  .errorIcon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .errorTitle {
+    font-size: var(--font-size-2xl);
+  }
+
+  .errorMessage {
+    font-size: var(--font-size-base);
+  }
+
+  .errorActions {
+    flex-direction: column;
+  }
+
+  .errorActions button {
+    width: 100%;
+  }
+}
+
+/* Tablet devices - slightly adjust spacing */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .errorContent {
+    padding: var(--space-xl) var(--space-2xl);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Ensure focus states are visible */
+.errorDetailsSummary:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .errorDetailsSummary {
+    transition: none;
+  }
+}

@@ -149,18 +149,10 @@ export default function CategoryBrowsePage() {
   /**
    * Handle filter changes from FilterPanel
    * 
-   * When user changes filters (price range, listing type, etc.),
-   * we update the filters state. This triggers a refetch via React Query.
-   * 
-   * We preserve the category filter and reset to page 1.
+   * Note: FilterPanel manages its own state via URL parameters,
+   * so we don't need a handler here. The filters are automatically
+   * synced through the URL.
    */
-  const handleFilterChange = (newFilters: SearchParams) => {
-    setFilters({
-      ...newFilters,
-      category: categorySlug, // Always keep category filter
-      page: 1, // Reset to first page when filters change
-    });
-  };
 
   /**
    * Handle pagination
@@ -293,11 +285,7 @@ export default function CategoryBrowsePage() {
           We hide the category filter since we're already in a specific category.
         */}
         <aside className={styles.sidebar}>
-          <FilterPanel
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            hideCategory={true} // Hide category filter since we're in a category page
-          />
+          <FilterPanel />
         </aside>
 
         {/* Listings Grid */}

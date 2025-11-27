@@ -4,6 +4,7 @@ import App from './App';
 import './styles/reset.css';
 import './styles/variables.css';
 import './styles/base.css';
+import './styles/responsive.css';
 
 // Entry point for React application
 // StrictMode helps identify potential problems in the application

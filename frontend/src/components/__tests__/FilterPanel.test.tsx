@@ -181,7 +181,7 @@ describe('FilterPanel Component', () => {
     expect(locationInput.value).toBe('New York');
 
     // Check active filter count
-    expect(screen.getByText('5 active')).toBeInTheDocument();
+    expect(screen.getByText('5 active filters')).toBeInTheDocument();
   });
 
   /**
@@ -245,7 +245,8 @@ describe('FilterPanel Component', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('5 active')).toBeInTheDocument();
+      // Updated to match new format with "filters" text
+      expect(screen.getByText('5 active filters')).toBeInTheDocument();
     });
 
     // Click Clear All button

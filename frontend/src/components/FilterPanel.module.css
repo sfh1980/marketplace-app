@@ -107,6 +107,23 @@
 }
 
 /**
+ * Fieldset
+ * 
+ * Semantic grouping for radio buttons.
+ * Remove default browser styling.
+ */
+.fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.fieldset legend {
+  padding: 0;
+}
+
+/**
  * Select Dropdown
  * 
  * Custom styling for the category dropdown.

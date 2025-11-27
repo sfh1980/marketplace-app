@@ -1,0 +1,582 @@
+/**
+ * Responsive Design Utilities
+ * 
+ * This file provides utility classes and global responsive styles
+ * that can be used throughout the application.
+ * 
+ * Educational Focus:
+ * - Mobile-first design philosophy
+ * - Media query breakpoints
+ * - Touch-friendly interactions
+ * - Responsive typography
+ * - Layout utilities
+ * 
+ * Mobile-First Approach:
+ * We write base styles for mobile devices first, then use media queries
+ * to enhance the experience for larger screens. This ensures:
+ * 1. Mobile users get the fastest experience (no overriding styles)
+ * 2. We prioritize essential content
+ * 3. Progressive enhancement for larger screens
+ */
+
+/* ============================================
+   RESPONSIVE CONTAINER UTILITIES
+   ============================================
+   Reusable container classes with responsive padding
+*/
+
+/**
+ * Standard container with max-width and centered content
+ * Padding adjusts based on screen size
+ */
+.container-responsive {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+}
+
+/* Tablet: Increase padding */
+@media (min-width: 768px) {
+  .container-responsive {
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+}
+
+/* Desktop: Max width and more padding */
+@media (min-width: 1024px) {
+  .container-responsive {
+    max-width: 1200px;
+    padding-left: var(--space-xl);
+    padding-right: var(--space-xl);
+  }
+}
+
+/* ============================================
+   RESPONSIVE VISIBILITY UTILITIES
+   ============================================
+   Show/hide elements based on screen size
+*/
+
+/* Hide on mobile, show on tablet and up */
+.hide-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hide-mobile {
+    display: block;
+  }
+}
+
+/* Show on mobile, hide on tablet and up */
+.show-mobile {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .show-mobile {
+    display: none;
+  }
+}
+
+/* Hide on tablet, show on mobile and desktop */
+.hide-tablet {
+  display: block;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hide-tablet {
+    display: none;
+  }
+}
+
+/* ============================================
+   RESPONSIVE TYPOGRAPHY
+   ============================================
+   Fluid typography that scales with screen size
+*/
+
+/**
+ * Responsive headings
+ * Font sizes scale down on mobile for better readability
+ */
+.heading-responsive-xl {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-tight);
+}
+
+@media (min-width: 768px) {
+  .heading-responsive-xl {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-responsive-xl {
+    font-size: var(--font-size-4xl);
+  }
+}
+
+.heading-responsive-lg {
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-tight);
+}
+
+@media (min-width: 768px) {
+  .heading-responsive-lg {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-responsive-lg {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+/* ============================================
+   RESPONSIVE GRID UTILITIES
+   ============================================
+   Flexible grid layouts that adapt to screen size
+*/
+
+/**
+ * Responsive grid with auto-fit columns
+ * Automatically adjusts number of columns based on available space
+ */
+.grid-responsive {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: 1fr;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) {
+  .grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 1024px) {
+  .grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+  }
+}
+
+/* 4-column grid variant */
+.grid-responsive-4 {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid-responsive-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .grid-responsive-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============================================
+   RESPONSIVE FLEXBOX UTILITIES
+   ============================================
+   Flex layouts that stack on mobile
+*/
+
+/**
+ * Flex row on desktop, column on mobile
+ * Common pattern for forms and content layouts
+ */
+.flex-responsive {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .flex-responsive {
+    flex-direction: row;
+    gap: var(--space-lg);
+  }
+}
+
+/* Reverse: Column on desktop, row on mobile */
+.flex-responsive-reverse {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .flex-responsive-reverse {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+}
+
+/* ============================================
+   TOUCH-FRIENDLY INTERACTIONS
+   ============================================
+   Ensure interactive elements are easy to tap on mobile
+*/
+
+/**
+ * Minimum touch target size
+ * Apple and Google recommend 44x44px minimum for touch targets
+ * This ensures buttons are easy to tap on mobile devices
+ */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/**
+ * Increase tap area without changing visual size
+ * Uses pseudo-element to expand clickable area
+ */
+.touch-target-expanded {
+  position: relative;
+}
+
+.touch-target-expanded::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -8px;
+}
+
+/* ============================================
+   RESPONSIVE SPACING
+   ============================================
+   Spacing that adjusts based on screen size
+*/
+
+.spacing-responsive-sm {
+  padding: var(--space-sm);
+}
+
+@media (min-width: 768px) {
+  .spacing-responsive-sm {
+    padding: var(--space-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .spacing-responsive-sm {
+    padding: var(--space-lg);
+  }
+}
+
+.spacing-responsive-lg {
+  padding: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .spacing-responsive-lg {
+    padding: var(--space-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .spacing-responsive-lg {
+    padding: var(--space-xl);
+  }
+}
+
+/* ============================================
+   RESPONSIVE IMAGES
+   ============================================
+   Ensure images scale properly on all devices
+*/
+
+/**
+ * Responsive image
+ * Scales to container width while maintaining aspect ratio
+ */
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/**
+ * Responsive background image
+ * Covers container while maintaining aspect ratio
+ */
+.bg-responsive {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ============================================
+   RESPONSIVE TABLES
+   ============================================
+   Make tables scrollable on mobile
+*/
+
+/**
+ * Scrollable table container
+ * Prevents tables from breaking layout on small screens
+ */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+  min-width: 600px;
+}
+
+/* ============================================
+   RESPONSIVE FORMS
+   ============================================
+   Form layouts that adapt to screen size
+*/
+
+/**
+ * Form group that stacks on mobile
+ */
+.form-group-responsive {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 768px) {
+  .form-group-responsive {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .form-group-responsive label {
+    min-width: 150px;
+    flex-shrink: 0;
+  }
+  
+  .form-group-responsive input,
+  .form-group-responsive select,
+  .form-group-responsive textarea {
+    flex: 1;
+  }
+}
+
+/* ============================================
+   RESPONSIVE NAVIGATION
+   ============================================
+   Navigation patterns for different screen sizes
+*/
+
+/**
+ * Horizontal nav on desktop, vertical on mobile
+ */
+.nav-responsive {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 768px) {
+  .nav-responsive {
+    flex-direction: row;
+    gap: var(--space-lg);
+  }
+}
+
+/* ============================================
+   RESPONSIVE MODALS
+   ============================================
+   Modal behavior adjustments for mobile
+*/
+
+/**
+ * Full-screen modal on mobile
+ * Centered modal on desktop
+ */
+.modal-responsive {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+@media (min-width: 768px) {
+  .modal-responsive {
+    position: relative;
+    inset: auto;
+    width: auto;
+    height: auto;
+    max-width: 600px;
+    border-radius: var(--radius-lg);
+  }
+}
+
+/* ============================================
+   RESPONSIVE CARDS
+   ============================================
+   Card layouts that adapt to screen size
+*/
+
+/**
+ * Card that's full-width on mobile, fixed-width on desktop
+ */
+.card-responsive {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .card-responsive {
+    max-width: 400px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE TEXT ALIGNMENT
+   ============================================
+   Text alignment that changes with screen size
+*/
+
+.text-center-mobile {
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .text-center-mobile {
+    text-align: left;
+  }
+}
+
+.text-left-mobile {
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .text-left-mobile {
+    text-align: center;
+  }
+}
+
+/* ============================================
+   RESPONSIVE OVERFLOW
+   ============================================
+   Handle overflow on different devices
+*/
+
+/**
+ * Horizontal scroll on mobile
+ * Useful for wide content like tables or image galleries
+ */
+.scroll-x-mobile {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+  .scroll-x-mobile {
+    overflow-x: visible;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================
+   Optimize layout for printing
+*/
+
+@media print {
+  /* Hide non-essential elements */
+  .hide-print {
+    display: none !important;
+  }
+  
+  /* Remove shadows and backgrounds to save ink */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  /* Ensure links are visible */
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+  
+  /* Page breaks */
+  .page-break-before {
+    page-break-before: always;
+  }
+  
+  .page-break-after {
+    page-break-after: always;
+  }
+  
+  .page-break-avoid {
+    page-break-inside: avoid;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY: FOCUS VISIBLE
+   ============================================
+   Enhanced focus indicators for keyboard navigation
+*/
+
+/**
+ * Visible focus ring for keyboard users
+ * Only shows when navigating with keyboard, not mouse
+ */
+.focus-visible-enhanced:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINT REFERENCE
+   ============================================
+   
+   Our breakpoints (defined in variables.css):
+   - Mobile: < 640px (base styles, no media query needed)
+   - Tablet: 640px - 1023px
+   - Desktop: 1024px+
+   
+   Common device sizes:
+   - iPhone SE: 375px
+   - iPhone 12/13: 390px
+   - iPad: 768px
+   - iPad Pro: 1024px
+   - Desktop: 1280px+
+   
+   Best Practices:
+   1. Start with mobile styles (mobile-first)
+   2. Use min-width media queries to enhance for larger screens
+   3. Test on real devices when possible
+   4. Use browser dev tools device emulation
+   5. Consider touch vs mouse interactions
+   6. Ensure minimum 44x44px touch targets
+   7. Test with different font sizes (accessibility)
+   8. Consider landscape orientation on mobile
+*/

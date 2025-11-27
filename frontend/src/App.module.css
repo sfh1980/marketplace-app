@@ -216,7 +216,44 @@
 .shadowLg { box-shadow: var(--shadow-lg); }
 .shadowXl { box-shadow: var(--shadow-xl); }
 
-/* Responsive adjustments */
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================
+   Mobile-first responsive design
+*/
+
+/* Mobile: Smaller header and adjusted spacing */
+@media (max-width: 640px) {
+  .appHeader {
+    padding: var(--space-lg) var(--space-md);
+  }
+  
+  .appHeader h1 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .appHeader p {
+    font-size: var(--font-size-base);
+  }
+  
+  .appMain {
+    padding: var(--space-md);
+  }
+  
+  .demoSection {
+    padding: var(--space-md);
+  }
+  
+  .buttonDemo {
+    flex-direction: column;
+  }
+  
+  .demoButton {
+    width: 100%;
+  }
+}
+
+/* Tablet: Adjust grid layouts */
 @media (max-width: 768px) {
   .colorGrid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -225,5 +262,16 @@
   .shadowDemo {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: var(--space-md);
+  }
+}
+
+/* Desktop: Larger spacing */
+@media (min-width: 1024px) {
+  .appHeader {
+    padding: var(--space-2xl) var(--space-xl);
+  }
+  
+  .appMain {
+    padding: var(--space-2xl) var(--space-xl);
   }
 }

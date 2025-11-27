@@ -1,0 +1,139 @@
+/**
+ * LoadingSpinner Styles
+ * 
+ * Styles for the loading spinner component with smooth animations.
+ * 
+ * Key Concepts:
+ * - CSS Animations: Using @keyframes for smooth rotation
+ * - Transform: GPU-accelerated animations for performance
+ * - Flexbox: Centering and layout
+ * - CSS Variables: Consistent sizing and colors
+ * 
+ * Performance Considerations:
+ * - Use transform instead of position changes (GPU-accelerated)
+ * - Use will-change to hint browser about animations
+ * - Keep animations simple for smooth 60fps
+ * - Respect prefers-reduced-motion for accessibility
+ */
+
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+}
+
+/* Centered variant */
+.centered {
+  justify-content: center;
+  min-height: 200px;
+}
+
+/* Spinner Base Styles */
+.spinner {
+  border-radius: var(--radius-full);
+  border-style: solid;
+  border-color: var(--color-border);
+  border-top-color: var(--color-primary);
+  
+  /* Animation */
+  animation: spin 0.8s linear infinite;
+  
+  /* Performance hint */
+  will-change: transform;
+}
+
+/* Size Variants */
+.spinnerSmall {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.spinnerMedium {
+  width: 40px;
+  height: 40px;
+  border-width: 3px;
+}
+
+.spinnerLarge {
+  width: 60px;
+  height: 60px;
+  border-width: 4px;
+}
+
+/* Loading Message */
+.message {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  max-width: 300px;
+}
+
+/* Screen Reader Only Text */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/**
+ * Spin Animation
+ * 
+ * Rotates the spinner 360 degrees continuously.
+ * 
+ * Why use transform instead of rotate property?
+ * - transform is GPU-accelerated (smoother, better performance)
+ * - Works consistently across browsers
+ * - Can be combined with other transforms
+ * 
+ * Why linear timing?
+ * - Creates constant rotation speed
+ * - Looks more natural for spinners
+ * - Easier to predict and debug
+ */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/**
+ * Reduced Motion Support
+ * 
+ * Respect user's motion preferences for accessibility.
+ * Some users experience motion sickness from animations.
+ * 
+ * When prefers-reduced-motion is set:
+ * - Disable rotation animation
+ * - Use opacity pulse instead (gentler)
+ * - Still provides visual feedback without motion
+ * 
+ * This is an important accessibility consideration!
+ */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+}

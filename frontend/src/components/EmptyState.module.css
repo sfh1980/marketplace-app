@@ -1,0 +1,146 @@
+/**
+ * EmptyState Styles
+ * 
+ * Styles for empty state component with friendly, inviting design.
+ * 
+ * Key Concepts:
+ * - Centered Layout: Focus attention on the message
+ * - Generous Spacing: Comfortable, not cramped
+ * - Soft Colors: Friendly, not harsh
+ * - Clear Hierarchy: Icon > Title > Message > Action
+ */
+
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-2xl);
+  min-height: 300px;
+}
+
+/* Size Variants */
+.small {
+  padding: var(--space-lg);
+  min-height: 200px;
+}
+
+.medium {
+  padding: var(--space-2xl);
+  min-height: 300px;
+}
+
+.large {
+  padding: calc(var(--space-2xl) * 1.5);
+  min-height: 400px;
+}
+
+/* Icon */
+.icon {
+  margin-bottom: var(--space-lg);
+  opacity: 0.8;
+}
+
+.emoji {
+  font-size: 4rem;
+  line-height: 1;
+  display: block;
+}
+
+.small .emoji {
+  font-size: 3rem;
+}
+
+.large .emoji {
+  font-size: 5rem;
+}
+
+/* Content */
+.content {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* Title */
+.title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
+}
+
+.small .title {
+  font-size: var(--font-size-lg);
+}
+
+.large .title {
+  font-size: var(--font-size-2xl);
+}
+
+/* Message */
+.message {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+}
+
+.small .message {
+  font-size: var(--font-size-sm);
+}
+
+.large .message {
+  font-size: var(--font-size-lg);
+}
+
+/* Action */
+.action {
+  margin-top: var(--space-md);
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/**
+ * Responsive Design
+ * 
+ * Adjust padding and sizing for mobile devices.
+ */
+@media (max-width: 640px) {
+  .container {
+    padding: var(--space-xl);
+    min-height: 250px;
+  }
+  
+  .small {
+    padding: var(--space-md);
+    min-height: 150px;
+  }
+  
+  .large {
+    padding: var(--space-xl);
+    min-height: 300px;
+  }
+  
+  .emoji {
+    font-size: 3rem;
+  }
+  
+  .small .emoji {
+    font-size: 2rem;
+  }
+  
+  .large .emoji {
+    font-size: 4rem;
+  }
+  
+  .content {
+    max-width: 100%;
+  }
+}

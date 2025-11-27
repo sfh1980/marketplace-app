@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { ErrorBoundary } from './components';
+import { SkipLink } from './components/SkipLink';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import AuthContextExample from './examples/AuthContextExample';
@@ -36,94 +38,105 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Router>
-          <div className={styles.app}>
-            <main className={styles.appMain}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/auth-example" element={<AuthContextExample />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/verify-email-notice" element={<VerifyEmailNoticePage />} />
-                <Route path="/verify-email" element={<VerifyEmailPage />} />
-                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                <Route path="/reset-password" element={<ResetPasswordPage />} />
-                
-                {/* Profile Page - Public */}
-                <Route path="/profile/:userId" element={<ProfilePage />} />
-                
-                {/* Category Browse Page - Public */}
-                <Route path="/categories/:categorySlug" element={<CategoryBrowsePage />} />
-                
-                {/* Listing Detail Page - Public */}
-                <Route path="/listings/:listingId" element={<ListingDetailPage />} />
-                
-                {/* Protected Routes - Require Authentication */}
-                <Route 
-                  path="/dashboard" 
-                  element={
-                    <ProtectedRoute>
-                      <DashboardPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/profile/:userId/edit" 
-                  element={
-                    <ProtectedRoute>
-                      <ProfileEditPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/listings/create" 
-                  element={
-                    <ProtectedRoute>
-                      <CreateListingPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/listings/:listingId/edit" 
-                  element={
-                    <ProtectedRoute>
-                      <ListingEditPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/my-listings" 
-                  element={
-                    <ProtectedRoute>
-                      <MyListingsPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/messages" 
-                  element={
-                    <ProtectedRoute>
-                      <MessagesInboxPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/messages/:otherUserId" 
-                  element={
-                    <ProtectedRoute>
-                      <ConversationPage />
-                    </ProtectedRoute>
-                  } 
-                />
-              </Routes>
-            </main>
-          </div>
-        </Router>
-      </AuthProvider>
-    </QueryClientProvider>
+    // Top-level error boundary catches errors in the entire app
+    // This prevents the whole app from crashing if any component fails
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Router>
+            {/* Skip link for keyboard accessibility */}
+            <SkipLink />
+            
+            <div className={styles.app}>
+              {/* Main content area with ID for skip link target */}
+              <main id="main-content" className={styles.appMain}>
+                {/* Nested error boundary for routes - isolates routing errors */}
+                <ErrorBoundary>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/search" element={<SearchPage />} />
+                    <Route path="/auth-example" element={<AuthContextExample />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/verify-email-notice" element={<VerifyEmailNoticePage />} />
+                    <Route path="/verify-email" element={<VerifyEmailPage />} />
+                    <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                    <Route path="/reset-password" element={<ResetPasswordPage />} />
+                    
+                    {/* Profile Page - Public */}
+                    <Route path="/profile/:userId" element={<ProfilePage />} />
+                    
+                    {/* Category Browse Page - Public */}
+                    <Route path="/categories/:categorySlug" element={<CategoryBrowsePage />} />
+                    
+                    {/* Listing Detail Page - Public */}
+                    <Route path="/listings/:listingId" element={<ListingDetailPage />} />
+                    
+                    {/* Protected Routes - Require Authentication */}
+                    <Route 
+                      path="/dashboard" 
+                      element={
+                        <ProtectedRoute>
+                          <DashboardPage />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/profile/:userId/edit" 
+                      element={
+                        <ProtectedRoute>
+                          <ProfileEditPage />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/listings/create" 
+                      element={
+                        <ProtectedRoute>
+                          <CreateListingPage />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/listings/:listingId/edit" 
+                      element={
+                        <ProtectedRoute>
+                          <ListingEditPage />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/my-listings" 
+                      element={
+                        <ProtectedRoute>
+                          <MyListingsPage />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/messages" 
+                      element={
+                        <ProtectedRoute>
+                          <MessagesInboxPage />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/messages/:otherUserId" 
+                      element={
+                        <ProtectedRoute>
+                          <ConversationPage />
+                        </ProtectedRoute>
+                      } 
+                    />
+                  </Routes>
+                </ErrorBoundary>
+              </main>
+            </div>
+          </Router>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

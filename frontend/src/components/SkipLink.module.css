@@ -1,0 +1,65 @@
+/**
+ * SkipLink Styles
+ * 
+ * The skip link is hidden off-screen by default and only becomes
+ * visible when it receives keyboard focus.
+ * 
+ * This is a common accessibility pattern that helps keyboard users
+ * without cluttering the visual design for mouse users.
+ */
+
+.skipLink {
+  /* Position off-screen by default */
+  position: absolute;
+  top: -40px;
+  left: 0;
+  
+  /* Styling when visible */
+  background: var(--color-primary);
+  color: white;
+  padding: var(--space-md) var(--space-lg);
+  text-decoration: none;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  
+  /* Ensure it's above everything else when visible */
+  z-index: 9999;
+  
+  /* Smooth transition when appearing */
+  transition: top var(--transition-fast);
+  
+  /* Rounded bottom corners for visual appeal */
+  border-bottom-right-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+  
+  /* Box shadow for depth */
+  box-shadow: var(--shadow-lg);
+}
+
+/**
+ * When the skip link receives focus, move it into view
+ * 
+ * :focus-visible is used instead of :focus to only show the
+ * skip link when navigating with keyboard, not when clicked
+ */
+.skipLink:focus,
+.skipLink:focus-visible {
+  top: 0;
+  outline: 2px solid var(--color-primary-dark);
+  outline-offset: 2px;
+}
+
+/**
+ * Hover state for visual feedback
+ */
+.skipLink:hover {
+  background: var(--color-primary-dark);
+}
+
+/**
+ * Active state (when being clicked)
+ */
+.skipLink:active {
+  background: var(--color-primary-dark);
+  transform: translateY(1px);
+}

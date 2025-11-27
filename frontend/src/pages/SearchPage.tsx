@@ -233,7 +233,7 @@ const SearchPage: React.FC = () => {
           
           Shows the search query and result count
         */}
-        <div className={styles.header}>
+        <header className={styles.header}>
           <h1>Search Results</h1>
           {currentSearchParams.query && (
             <p className={styles.searchQuery}>
@@ -241,11 +241,16 @@ const SearchPage: React.FC = () => {
             </p>
           )}
           {pagination && (
-            <p className={styles.resultCount}>
+            <p 
+              className={styles.resultCount}
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               Found {pagination.total} {pagination.total === 1 ? 'listing' : 'listings'}
             </p>
           )}
-        </div>
+        </header>
 
         {/* 
           Two-Column Layout: Sidebar + Main Content
@@ -302,13 +307,18 @@ const SearchPage: React.FC = () => {
               - minmax(280px, 1fr): Each column is at least 280px, but can grow to fill space
               - 1fr: Fraction of available space (equal width columns)
             */}
-            <div className={styles.listingsGrid}>
+            <div 
+              className={styles.listingsGrid}
+              role="list"
+              aria-label="Search results"
+            >
               {listings.map((listing) => (
-                <ListingCard
-                  key={listing.id}
-                  listing={listing}
-                  onClick={() => handleListingClick(listing.id)}
-                />
+                <div key={listing.id} role="listitem">
+                  <ListingCard
+                    listing={listing}
+                    onClick={() => handleListingClick(listing.id)}
+                  />
+                </div>
               ))}
             </div>
 
@@ -328,18 +338,27 @@ const SearchPage: React.FC = () => {
               - Server load: Reduces database queries
             */}
             {pagination && pagination.totalPages > 1 && (
-              <div className={styles.pagination}>
+              <nav 
+                className={styles.pagination}
+                role="navigation"
+                aria-label="Pagination"
+              >
                 {/* Previous Page Button */}
                 <Button
                   variant="secondary"
                   onClick={() => handlePageChange(pagination.page - 1)}
                   disabled={pagination.page === 1}
+                  aria-label={`Go to page ${pagination.page - 1}`}
                 >
                   ← Previous
                 </Button>
 
                 {/* Page Info */}
-                <span className={styles.pageInfo}>
+                <span 
+                  className={styles.pageInfo}
+                  aria-current="page"
+                  aria-label={`Current page ${pagination.page} of ${pagination.totalPages}`}
+                >
                   Page {pagination.page} of {pagination.totalPages}
                 </span>
 
@@ -348,10 +367,11 @@ const SearchPage: React.FC = () => {
                   variant="secondary"
                   onClick={() => handlePageChange(pagination.page + 1)}
                   disabled={pagination.page === pagination.totalPages}
+                  aria-label={`Go to page ${pagination.page + 1}`}
                 >
                   Next →
                 </Button>
-              </div>
+              </nav>
             )}
           </main>
         </div>

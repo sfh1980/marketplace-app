@@ -294,6 +294,87 @@ export const CreateListingPage: React.FC = () => {
   };
   
   /**
+   * Validate Form
+   * 
+   * Validates all form fields and returns validation errors.
+   * This allows us to check if the form is valid before submission
+   * and disable the submit button accordingly.
+   * 
+   * @returns Object containing validation errors for each field
+   */
+  const validateForm = () => {
+    const errors: Record<string, string | null> = {};
+    
+    // Validate title
+    if (title.trim().length === 0) {
+      errors.title = 'Title is required';
+    } else if (title.trim().length < 5) {
+      errors.title = 'Title must be at least 5 characters';
+    } else if (title.trim().length > 100) {
+      errors.title = 'Title must be no more than 100 characters';
+    } else {
+      errors.title = null;
+    }
+    
+    // Validate description
+    if (description.trim().length === 0) {
+      errors.description = 'Description is required';
+    } else if (description.trim().length < 20) {
+      errors.description = 'Description must be at least 20 characters';
+    } else if (description.trim().length > 2000) {
+      errors.description = 'Description must be no more than 2000 characters';
+    } else {
+      errors.description = null;
+    }
+    
+    // Validate price
+    if (price.trim().length === 0) {
+      errors.price = 'Price is required';
+    } else {
+      const priceNum = parseFloat(price);
+      if (isNaN(priceNum) || priceNum <= 0) {
+        errors.price = 'Please enter a valid price greater than 0';
+      } else {
+        errors.price = null;
+      }
+    }
+    
+    // Validate category
+    if (!category) {
+      errors.category = 'Please select a category';
+    } else {
+      errors.category = null;
+    }
+    
+    // Validate location
+    if (location.trim().length === 0) {
+      errors.location = 'Location is required';
+    } else {
+      errors.location = null;
+    }
+    
+    // Validate images
+    if (selectedImages.length === 0) {
+      errors.images = 'Please upload at least one image';
+    } else {
+      errors.images = null;
+    }
+    
+    return errors;
+  };
+  
+  /**
+   * Check if Form is Valid
+   * 
+   * Returns true if all fields are valid (no errors).
+   * Used to enable/disable the submit button.
+   */
+  const isFormValid = () => {
+    const errors = validateForm();
+    return Object.values(errors).every((error) => error === null);
+  };
+
+  /**
    * Handle Form Submission
    * 
    * This function validates and submits the form.
@@ -321,40 +402,13 @@ export const CreateListingPage: React.FC = () => {
     // Clear previous errors
     setError(null);
     
-    // Validate title
-    if (title.trim().length < 5 || title.trim().length > 100) {
-      setError('Title must be between 5 and 100 characters');
-      return;
-    }
+    // Validate all fields
+    const errors = validateForm();
     
-    // Validate description
-    if (description.trim().length < 20 || description.trim().length > 2000) {
-      setError('Description must be between 20 and 2000 characters');
-      return;
-    }
-    
-    // Validate price
-    const priceNum = parseFloat(price);
-    if (isNaN(priceNum) || priceNum <= 0) {
-      setError('Please enter a valid price greater than 0');
-      return;
-    }
-    
-    // Validate category
-    if (!category) {
-      setError('Please select a category');
-      return;
-    }
-    
-    // Validate location
-    if (location.trim().length === 0) {
-      setError('Please enter a location');
-      return;
-    }
-    
-    // Validate images
-    if (selectedImages.length === 0) {
-      setError('Please upload at least one image');
+    // Find first error and display it
+    const firstError = Object.values(errors).find((error) => error !== null);
+    if (firstError) {
+      setError(firstError);
       return;
     }
     
@@ -366,6 +420,7 @@ export const CreateListingPage: React.FC = () => {
      * 
      * The images are File objects, which will be sent as multipart/form-data.
      */
+    const priceNum = parseFloat(price);
     const listingData = {
       title: title.trim(),
       description: description.trim(),
@@ -700,16 +755,22 @@ export const CreateListingPage: React.FC = () => {
              * 
              * Submit button:
              * - Disabled while submitting (prevents double-submit)
+             * - Disabled when form is invalid (prevents invalid submission)
              * - Shows loading state
              * 
              * Cancel button:
              * - Returns to previous page
              * - Discards all changes
+             * 
+             * Why disable submit on invalid form?
+             * - Prevents frustration (user clicks submit, sees error, fixes, repeats)
+             * - Clear feedback (button disabled = something needs fixing)
+             * - Better UX (user knows form state at a glance)
              */}
             <div className={styles.formActions}>
               <Button
                 type="submit"
-                disabled={createListingMutation.isPending}
+                disabled={!isFormValid() || createListingMutation.isPending}
               >
                 {createListingMutation.isPending ? 'Creating...' : 'Create Listing'}
               </Button>
@@ -723,6 +784,13 @@ export const CreateListingPage: React.FC = () => {
                 Cancel
               </Button>
             </div>
+            
+            {/* Form Validation Hint */}
+            {!isFormValid() && !error && (
+              <p className={styles.validationHint}>
+                Please fill in all required fields to create your listing
+              </p>
+            )}
           </form>
         </Card.Body>
       </Card>

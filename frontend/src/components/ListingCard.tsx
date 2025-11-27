@@ -131,6 +131,46 @@ export const ListingCard: React.FC<ListingCardProps> = ({
     }
   };
 
+  /**
+   * Handle keyboard interaction
+   * 
+   * Allow Enter and Space keys to activate the card, just like a button.
+   * This ensures keyboard users can interact with the card.
+   */
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    // Only handle if onClick is provided
+    if (!onClick) return;
+    
+    // Enter or Space key activates the card
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault(); // Prevent page scroll on Space
+      onClick();
+    }
+  };
+
+  /**
+   * Generate accessible label for the card
+   * 
+   * Screen readers will announce this complete description
+   */
+  const getAriaLabel = () => {
+    const parts = [
+      listing.title,
+      `Price: $${formatPrice()}`,
+      `Type: ${listing.listingType}`,
+    ];
+    
+    if (listing.location) {
+      parts.push(`Location: ${listing.location}`);
+    }
+    
+    if (listing.status !== 'active') {
+      parts.push(`Status: ${listing.status}`);
+    }
+    
+    return parts.join(', ');
+  };
+
   return (
     <Card
       variant="outlined"
@@ -138,6 +178,11 @@ export const ListingCard: React.FC<ListingCardProps> = ({
       hoverable
       onClick={onClick}
       className={`${styles.listingCard} ${className}`}
+      // Accessibility: Make card keyboard accessible
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={handleKeyDown}
+      role={onClick ? 'button' : undefined}
+      aria-label={onClick ? getAriaLabel() : undefined}
     >
       {/* 
         Listing Image
@@ -150,7 +195,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
         <div className={styles.imageContainer}>
           <img
             src={listing.images[0]}
-            alt={listing.title}
+            alt={`${listing.title} - ${listing.listingType}`}
             className={styles.image}
           />
           
@@ -161,7 +206,10 @@ export const ListingCard: React.FC<ListingCardProps> = ({
             This makes the status immediately visible
           */}
           {listing.status !== 'active' && (
-            <div className={`${styles.statusBadgeOverlay} ${getStatusBadgeClass()}`}>
+            <div 
+              className={`${styles.statusBadgeOverlay} ${getStatusBadgeClass()}`}
+              aria-label={`Listing status: ${listing.status}`}
+            >
               {listing.status.toUpperCase()}
             </div>
           )}

@@ -228,16 +228,44 @@ const FilterPanel: React.FC = () => {
   ].filter(Boolean).length;
 
   /**
+   * Handle keyboard shortcuts for filter panel
+   * 
+   * Allows users to quickly apply or clear filters with keyboard
+   */
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    // Ctrl/Cmd + Enter to apply filters
+    if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+      event.preventDefault();
+      handleApplyFilters();
+    }
+    
+    // Escape to clear filters (if any are active)
+    if (event.key === 'Escape' && activeFilterCount > 0) {
+      event.preventDefault();
+      handleClearFilters();
+    }
+  };
+
+  /**
    * Render the filter panel
    */
   return (
-    <div className={styles.filterPanel}>
+    <div 
+      className={styles.filterPanel}
+      onKeyDown={handleKeyDown}
+      role="search"
+      aria-label="Filter listings"
+    >
       {/* Header with active filter count */}
       <div className={styles.header}>
         <h2 className={styles.title}>Filters</h2>
         {activeFilterCount > 0 && (
-          <span className={styles.activeCount}>
-            {activeFilterCount} active
+          <span 
+            className={styles.activeCount}
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {activeFilterCount} active {activeFilterCount === 1 ? 'filter' : 'filters'}
           </span>
         )}
       </div>
@@ -284,42 +312,47 @@ const FilterPanel: React.FC = () => {
           Requirements: 4.4 (Listing type filter)
         */}
         <div className={styles.filterGroup}>
-          <label className={styles.label}>Listing Type</label>
-          <div className={styles.radioGroup}>
-            <label className={styles.radioLabel}>
-              <input
-                type="radio"
-                name="listingType"
-                value=""
-                checked={listingType === ''}
-                onChange={(e) => setListingType(e.target.value as '')}
-                className={styles.radio}
-              />
-              <span>All</span>
-            </label>
-            <label className={styles.radioLabel}>
-              <input
-                type="radio"
-                name="listingType"
-                value="item"
-                checked={listingType === 'item'}
-                onChange={(e) => setListingType(e.target.value as ListingType)}
-                className={styles.radio}
-              />
-              <span>Items</span>
-            </label>
-            <label className={styles.radioLabel}>
-              <input
-                type="radio"
-                name="listingType"
-                value="service"
-                checked={listingType === 'service'}
-                onChange={(e) => setListingType(e.target.value as ListingType)}
-                className={styles.radio}
-              />
-              <span>Services</span>
-            </label>
-          </div>
+          <fieldset className={styles.fieldset}>
+            <legend className={styles.label}>Listing Type</legend>
+            <div className={styles.radioGroup} role="radiogroup" aria-label="Select listing type">
+              <label className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="listingType"
+                  value=""
+                  checked={listingType === ''}
+                  onChange={(e) => setListingType(e.target.value as '')}
+                  className={styles.radio}
+                  aria-label="All listing types"
+                />
+                <span>All</span>
+              </label>
+              <label className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="listingType"
+                  value="item"
+                  checked={listingType === 'item'}
+                  onChange={(e) => setListingType(e.target.value as ListingType)}
+                  className={styles.radio}
+                  aria-label="Items only"
+                />
+                <span>Items</span>
+              </label>
+              <label className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="listingType"
+                  value="service"
+                  checked={listingType === 'service'}
+                  onChange={(e) => setListingType(e.target.value as ListingType)}
+                  className={styles.radio}
+                  aria-label="Services only"
+                />
+                <span>Services</span>
+              </label>
+            </div>
+          </fieldset>
         </div>
 
         {/* 

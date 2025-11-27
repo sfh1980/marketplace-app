@@ -177,7 +177,7 @@ export const ConversationPage: React.FC = () => {
       // Return context with previous value
       return { previousMessages };
     },
-    onError: (err, content, context) => {
+    onError: (_err, _content, context) => {
       // If mutation fails, roll back to previous value
       if (context?.previousMessages) {
         queryClient.setQueryData(

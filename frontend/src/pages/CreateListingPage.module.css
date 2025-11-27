@@ -352,6 +352,26 @@
 }
 
 /**
+ * Validation Hint
+ * 
+ * Helpful message shown when submit button is disabled due to validation.
+ * Provides clear feedback about why the form can't be submitted.
+ * 
+ * Styling:
+ * - Centered text
+ * - Muted color (not an error, just informational)
+ * - Small font size
+ * - Subtle styling to not distract from form
+ */
+.validationHint {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-md);
+  font-style: italic;
+}
+
+/**
  * Responsive Adjustments
  * 
  * On smaller screens:
